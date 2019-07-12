@@ -69,5 +69,8 @@ cd /opt
 wget https://busybox.net/downloads/busybox-1.30.1.tar.bz2
 tar xfv busybox-1.30.1.tar.bz2
 cd busybox-1.30.1
-cp /opt/PowerOS/config.busybox .config
+cp /opt/PowerOS/config/config.busybox .config
+make CFLAGS="-O2 -s" -j$(nproc)
+
+
 
