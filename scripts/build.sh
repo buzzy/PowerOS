@@ -71,6 +71,11 @@ tar xfv busybox-1.30.1.tar.bz2
 cd busybox-1.30.1
 cp /opt/PowerOS/config/config.busybox .config
 make CFLAGS="-O2 -s" -j$(nproc)
-
-
-
+#RE-COMPILE WITH NON-STATIC!
+make install
+mkdir -p /opt/sysroot/Programs/busybox/1.30.1/bin
+ln -s 1.30.1 /opt/sysroot/Programs/busybox/current
+cp /tmp/busybox/bin/busybox /opt/sysroot/Programs/busybox/1.30.1/bin
+find /tmp/busybox/bin/* -type l -execdir ln -s /Programs/busybox/1.30.1/bin/busybox /opt/sysroot/System/Index/bin/{} ';'
+find /tmp/busybox/sbin/* -type l -execdir ln -s /Programs/busybox/1.30.1/bin/busybox /opt/sysroot/System/Index/bin/{} ';'
+rm -fr /tmp/busybox
