@@ -1,5 +1,5 @@
---- init/init.c	2019-07-13 05:20:57.034805787 +0000
-+++ init/init.c	2019-07-13 05:19:19.421645633 +0000
+--- ./init/init.c	2019-07-13 05:20:57.034805787 +0000
++++ ./init/init.c	2019-07-13 05:19:19.421645633 +0000
 @@ -174,7 +174,7 @@
  #define ONCE        0x04
  /*
@@ -91,8 +91,8 @@
  //usage:	"\n"
  //usage:	"	# This is run first except when booting in single-user mode\n"
  //usage:	"	#\n"
---- include/usage.h	2019-07-13 05:27:24.514911047 +0000
-+++ include/usage.h	2019-07-13 05:27:02.410648802 +0000
+--- ./include/usage.h	2019-07-13 05:27:24.514911047 +0000
++++ ./include/usage.h	2019-07-13 05:27:02.410648802 +0000
 @@ -2401,10 +2401,10 @@
  #define init_full_usage "\n\n" \
         "Init is the first process started during boot. It never exits." \
