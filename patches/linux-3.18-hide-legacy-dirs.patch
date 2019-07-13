@@ -1,5 +1,5 @@
---- fs/Kconfig	2019-07-13 15:34:16.106055675 +0000
-+++ fs/Kconfig	2019-07-13 15:36:29.560197562 +0000
+--- ./fs/Kconfig	2019-07-13 15:34:16.106055675 +0000
++++ ./fs/Kconfig	2019-07-13 15:36:29.560197562 +0000
 @@ -85,6 +85,16 @@
  endmenu
  endif # BLOCK
@@ -17,8 +17,8 @@
  if BLOCK
  menu "DOS/FAT/NT Filesystems"
  
---- fs/Makefile	2019-07-13 15:34:28.534266992 +0000
-+++ fs/Makefile	2019-07-13 15:36:29.576197803 +0000
+--- ./fs/Makefile	2019-07-13 15:34:28.534266992 +0000
++++ ./fs/Makefile	2019-07-13 15:36:29.576197803 +0000
 @@ -45,6 +45,7 @@
  obj-$(CONFIG_NFS_COMMON)	+= nfs_common/
  obj-$(CONFIG_COREDUMP)		+= coredump.o
@@ -27,8 +27,8 @@
  
  obj-$(CONFIG_FHANDLE)		+= fhandle.o
  
---- fs/gobohide.c	2019-07-13 15:35:02.578832686 +0000
-+++ fs/gobohide.c	2019-07-13 15:36:29.592198044 +0000
+--- ./fs/gobohide.c	2019-07-13 15:35:02.578832686 +0000
++++ ./fs/gobohide.c	2019-07-13 15:36:29.592198044 +0000
 @@ -0,0 +1,513 @@
 +/*
 + * Copyright (C) 2002-2011 GoboLinux.org
@@ -543,8 +543,8 @@
 +EXPORT_SYMBOL(gobohide_put);
 +EXPORT_SYMBOL(gobohide_remove);
 +EXPORT_SYMBOL(gobohide_fs_ioctl);
---- fs/ioctl.c	2019-07-13 15:35:12.334991367 +0000
-+++ fs/ioctl.c	2019-07-13 15:36:29.592198044 +0000
+--- ./fs/ioctl.c	2019-07-13 15:35:12.334991367 +0000
++++ ./fs/ioctl.c	2019-07-13 15:36:29.592198044 +0000
 @@ -15,6 +15,7 @@
  #include <linux/writeback.h>
  #include <linux/buffer_head.h>
@@ -571,8 +571,8 @@
  	default:
  		if (S_ISREG(inode->i_mode))
  			error = file_ioctl(filp, cmd, arg);
---- fs/namei.c	2019-07-13 15:35:22.303151978 +0000
-+++ fs/namei.c	2019-07-13 15:37:13.360845545 +0000
+--- ./fs/namei.c	2019-07-13 15:35:22.303151978 +0000
++++ ./fs/namei.c	2019-07-13 15:37:13.360845545 +0000
 @@ -35,6 +35,7 @@
  #include <linux/fs_struct.h>
  #include <linux/posix_acl.h>
@@ -664,8 +664,8 @@
  
  	error = security_inode_symlink(dir, dentry, oldname);
  	if (error)
---- fs/readdir.c	2019-07-13 15:35:31.103292505 +0000
-+++ fs/readdir.c	2019-07-13 15:36:29.624198527 +0000
+--- ./fs/readdir.c	2019-07-13 15:35:31.103292505 +0000
++++ ./fs/readdir.c	2019-07-13 15:36:29.624198527 +0000
 @@ -18,6 +18,7 @@
  #include <linux/security.h>
  #include <linux/syscalls.h>
@@ -779,8 +779,8 @@
  	error = iterate_dir(f.file, &buf.ctx);
  	if (error >= 0)
  		error = buf.error;
---- include/linux/gobohide.h	2019-07-13 15:35:49.823587625 +0000
-+++ include/linux/gobohide.h	2019-07-13 15:36:29.640198767 +0000
+--- ./include/linux/gobohide.h	2019-07-13 15:35:49.823587625 +0000
++++ ./include/linux/gobohide.h	2019-07-13 15:36:29.640198767 +0000
 @@ -0,0 +1,58 @@
 +#ifndef _LINUX_GOBOHIDE_H
 +#define _LINUX_GOBOHIDE_H
@@ -840,8 +840,8 @@
 +
 +#endif  /* CONFIG_GOBOHIDE_FS */
 +#endif  /* _LINUX_GOBOHIDE_H */
---- include/uapi/linux/fs.h	2019-07-13 15:36:04.359813298 +0000
-+++ include/uapi/linux/fs.h	2019-07-13 15:36:29.640198767 +0000
+--- ./include/uapi/linux/fs.h	2019-07-13 15:36:04.359813298 +0000
++++ ./include/uapi/linux/fs.h	2019-07-13 15:36:29.640198767 +0000
 @@ -157,6 +157,7 @@
  #define FIFREEZE	_IOWR('X', 119, int)	/* Freeze */
  #define FITHAW		_IOWR('X', 120, int)	/* Thaw */
