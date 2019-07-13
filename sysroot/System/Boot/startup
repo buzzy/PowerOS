@@ -1,3 +1,42 @@
-#!/bin/sh
+#!/System/Index/bin/ash
 
-echo "Startup!"
+#Mount all drives
+#mount -t tmpfs -o size=64k,mode=0755 tmpfs /dev
+#mkdir /dev/pts
+#mount -t devpts devpts /dev/pts
+#mount -t proc proc /proc
+#mount -t sysfs sysfs /sys
+#echo /sbin/mdev > /proc/sys/kernel/hotplug
+#mdev -s
+
+#Prevent kernel messages to console
+dmesg -n 1
+
+#Set hostname
+hostname -F /System/Settings/hostname
+
+#Empty temp and run dirs
+rm -rf /System/Temporary/*
+rm -rf /System/State/run/*
+
+#Start system logger
+syslogd -O /System/Logs/syslog
+
+#Start kernel logger
+klogd
+
+#Mount proc and sys filesystems
+mount -t proc none /System/Kernel/Status
+mount -t sysfs none /System/Kernel/Hardware
+
+#Print system log to tty10 (ALT+F10)
+tail -f /System/Logs/syslog > /System/Kernel/Devices/tty10 &
+
+#Load modules for auto-detected hardware
+grep -h MODALIAS /System/Kernel/Hardware/bus/*/devices/*/uevent 2> /dev/null | cut -d= -f2 | sort -u | xargs modprobe -abq 2> /dev/null
+
+#Start cron daemon
+crond -c /System/Settings/crond
+
+#Start all network interfaces
+ifup -a
