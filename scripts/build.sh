@@ -63,16 +63,13 @@ rm -fr /tmp/headers
 find /opt/sysroot/Programs/linux-kernel/3.18.0-19095-g86596f58eadf/headers \( -name .install -o -name ..install.cmd \) -delete
 
 #BUSYBOX:
-#grep -R "/etc/inittab"
-#sed -i 's/\/etc\/inittab/\/System\/Settings\/busybox\/inittab/g' init.c
-#diff -u init.c init.c.backup > /root/init.patch
-
 export ARCH=arm
 export CROSS_COMPILE=arm-linux-gnueabihf-
 cd /opt
 wget https://busybox.net/downloads/busybox-1.30.1.tar.bz2
 tar xfv busybox-1.30.1.tar.bz2
 cd busybox-1.30.1
+sed -i 's/\/etc\/inittab/\/System\/Settings\/busybox\/inittab/g' init/init.c
 cp /opt/PowerOS/config/config.busybox .config
 make CFLAGS="-O2 -s" -j$(nproc)
 #RE-COMPILE WITH NON-STATIC!
@@ -85,5 +82,3 @@ find /tmp/busybox/sbin/* -type l -execdir ln -s /Programs/busybox/1.30.1/bin/bus
 rm -fr /tmp/busybox
 mkdir -p /opt/sysroot/Programs/busybox/1.30.1/etc
 ln -s /Programs/busybox/1.30.1/etc /opt/sysroot/System/Settings/busybox
-
-
