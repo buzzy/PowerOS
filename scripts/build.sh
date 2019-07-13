@@ -53,7 +53,7 @@ mkimage -D "-I dts -O dtb -p 2048" -f kernel.its vmlinux.uimg
 dd if=/dev/zero of=bootloader.bin bs=512 count=1
 echo "console=tty1 init=/sbin/init root=PARTUUID=%U/PARTNROFF=1 rootwait rw noinitrd" > cmdline
 vbutil_kernel --pack vmlinux.kpart --version 1 --vmlinuz vmlinux.uimg --arch aarch64 --keyblock /opt/PowerOS/signing/kernel.keyblock --signprivate /opt/PowerOS/signing/kernel_data_key.vbprivk --config cmdline --bootloader bootloader.bin
-mkdir -p /opt/sysroot/Programs/linux-kernel/3.18.0-19095-g86596f58eadf/image
+mkdir -p /opt/sysroot/Programs/linux-kernel-aarch64/3.18.0-19095-g86596f58eadf/image
 cp vmlinux.kpart /opt/sysroot/Programs/linux-kernel-aarch64/3.18.0-19095-g86596f58eadf/image
 
 make mrproper
@@ -91,3 +91,61 @@ tar xfv glibc-2.29.tar.xz
 cd glibc-2.29
 mkdir build
 cd build
+
+../configure \
+  CFLAGS="-O2 -s" \
+  --host=arm-linux-gnueabihf \
+  --prefix= \
+  --includedir=/include \
+  --libexecdir=/libexec \
+  --with-__thread \
+  --with-tls \
+  --with-fp \
+  --with-headers=/opt/sysroot/Programs/linux-kernel-aarch64/3.18.0-19095-g86596f58eadf/headers \
+  --without-cvs \
+  --without-gd \
+  --enable-kernel=3.18.0 \
+  --enable-stack-protector=strong \
+  --enable-shared \
+  --enable-add-ons=no \
+  --enable-obsolete-rpc \
+  --disable-profile \
+  --disable-debug \
+  --disable-sanity-checks \
+  --disable-static \
+  --disable-werror
+
+make -j$(nproc)
+make install DESTDIR=/tmp/glibc
+rm -rf /tmp/glibc/libexec
+rm -rf /tmp/glibc/share
+rm -rf /tmp/glibc/var
+mkdir -p /opt/sysroot/Programs/glibc/2.29
+cp -rv /tmp/glibc/* /opt/sysroot/Programs/glibc/2.29
+rm -rf /tmp/glibc
+ln -s 2.29 /opt/sysroot/Programs/glibc/current
+
+for file in /opt/sysroot/Programs/glibc/2.29/bin/*
+do
+  ln -s /Programs/glibc/2.29/bin/$(basename $file) /opt/sysroot/System/Index/Binaries/$(basename $file)
+done
+
+for file in /opt/sysroot/Programs/glibc/2.29/etc/*
+do
+  ln -s /Programs/glibc/2.29/etc/$(basename $file) /opt/sysroot/System/Settings/$(basename $file)
+done
+
+for file in /opt/sysroot/Programs/glibc/2.29/include/*
+do
+  ln -s /Programs/glibc/2.29/include/$(basename $file) /opt/sysroot/System/Index/Includes/$(basename $file)
+done
+
+for file in /opt/sysroot/Programs/glibc/2.29/lib/*
+do
+  ln -s /Programs/glibc/2.29/lib/$(basename $file) /opt/sysroot/System/Index/Libraries/$(basename $file)
+done
+
+for file in /opt/sysroot/Programs/glibc/2.29/sbin/*
+do
+  ln -s /Programs/glibc/2.29/sbin/$(basename $file) /opt/sysroot/System/Index/Binaries/$(basename $file)
+done
