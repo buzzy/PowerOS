@@ -25,6 +25,7 @@ if [ ! -d "/opt/kernel" ]; then
   tar xfv /opt/kernel.tar.gz -C /opt/kernel
 fi
 cd /opt/kernel
+patch -p1 < /opt/PowerOS/patches/linux-3.18-log2.patch
 patch -p1 < /opt/PowerOS/patches/linux-3.18-hide-legacy-dirs.patch
 cp include/linux/compiler-gcc5.h include/linux/compiler-gcc8.h
 cat /opt/PowerOS/config/config.chromeos /opt/PowerOS/config/config.chromeos.extra > .config
