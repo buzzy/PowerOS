@@ -41,6 +41,7 @@ rm -f /tmp/modules/lib/modules/*/{source,build}
 mkdir -p /opt/sysroot/Programs/linux-kernel/3.18.0-19095-g86596f58eadf/modules
 cp -rv /tmp/modules/lib/modules/3.18.0-19095-g86596f58eadf/* /opt/sysroot/Programs/linux-kernel/3.18.0-19095-g86596f58eadf/modules
 ln -s 3.18.0-19095-g86596f58eadf /opt/sysroot/Programs/linux-kernel/current
+ln -s /Programs/linux-kernel/3.18.0-19095-g86596f58eadf/modules /opt/sysroot/System/Kernel/Modules/3.18.0-19095-g86596f58eadf
 rm -rf /tmp/modules
 #depmod -b /opt/sysroot/System/Kernel/Modules -F System.map "3.18.0-19095-g86596f58eadf"
 
