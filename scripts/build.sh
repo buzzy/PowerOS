@@ -83,3 +83,11 @@ find /tmp/busybox/sbin/* -type l -execdir ln -s /Programs/busybox/1.30.1/bin/bus
 rm -fr /tmp/busybox
 mkdir -p /opt/sysroot/Programs/busybox/1.30.1/etc
 ln -s /Programs/busybox/1.30.1/etc /opt/sysroot/System/Settings/busybox
+
+#GLIBC
+cd /opt
+wget https://ftp.gnu.org/gnu/glibc/glibc-2.29.tar.xz
+tar xfv glibc-2.29.tar.xz
+cd glibc-2.29
+mkdir build
+cd build
