@@ -70,6 +70,11 @@ wget https://busybox.net/downloads/busybox-1.30.1.tar.bz2
 tar xfv busybox-1.30.1.tar.bz2
 cd busybox-1.30.1
 sed -i 's/\/etc\/inittab/\/System\/Settings\/busybox\/inittab/g' init/init.c
+sed -i 's/\/etc\/passwd/\/System\/Settings\/passwd/g' include/libbb.h
+sed -i 's/\/etc\/group/\/System\/Settings\/group/g' include/libbb.h
+sed -i 's/\/etc\/fstab/\/System\/Settings\/fstab/g' util-linux/mount.c
+sed -i 's/\/etc\/mdev.conf/\/System\/Settings\/busybox\/mdev.conf/g' util-linux/mdev.c
+sed -i 's/\/etc\/resolv.conf/\/System\/Settings\/resolv.conf/g' networking/nslookup.c
 cp /opt/PowerOS/config/config.busybox .config
 make CFLAGS="-O2 -s" -j$(nproc)
 #RE-COMPILE WITH NON-STATIC!
