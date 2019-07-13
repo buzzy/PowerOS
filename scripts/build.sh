@@ -76,8 +76,8 @@ make install
 mkdir -p /opt/sysroot/Programs/busybox/1.30.1/bin
 ln -s 1.30.1 /opt/sysroot/Programs/busybox/current
 cp /tmp/busybox/bin/busybox /opt/sysroot/Programs/busybox/1.30.1/bin
-find /tmp/busybox/bin/* -type l -execdir ln -s /Programs/busybox/1.30.1/bin/busybox /opt/sysroot/System/Index/bin/{} ';'
-find /tmp/busybox/sbin/* -type l -execdir ln -s /Programs/busybox/1.30.1/bin/busybox /opt/sysroot/System/Index/bin/{} ';'
+find /tmp/busybox/bin/* -type l -execdir ln -s /Programs/busybox/1.30.1/bin/busybox /opt/sysroot/System/Index/Binaries/{} ';'
+find /tmp/busybox/sbin/* -type l -execdir ln -s /Programs/busybox/1.30.1/bin/busybox /opt/sysroot/System/Index/Binaries/{} ';'
 rm -fr /tmp/busybox
 mkdir -p /opt/sysroot/Programs/busybox/1.30.1/etc
 ln -s /Programs/busybox/1.30.1/etc /opt/sysroot/System/Settings/busybox
