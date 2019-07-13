@@ -205,4 +205,56 @@ cd gcc-8.3.0
 mkdir build
 cd build
 
+../configure \
+  CFLAGS="-O2 -s" \
+  --host=arm-linux-gnueabihf \
+  --target=arm-linux-gnueabihf \
+  --prefix=/usr \
+  --with-sysroot=/ \
+  --with-float=hard \
+  --enable-threads=posix \
+  --enable-languages=c,c++ \
+  --enable-__cxa_atexit \
+  --disable-libmudflap \
+  --disable-libssp \
+  --disable-libgomp \
+  --disable-libstdcxx-pch \
+  --disable-nls \
+  --disable-multilib \
+  --disable-libquadmath \
+  --disable-libquadmath-support \
+  --disable-libsanitizer \
+  --disable-libmpx \
+  --disable-gold \
+  --enable-long-long \
+  --disable-static
 
+make -j$(nproc)
+make DESTDIR=/tmp/gcc install
+rm -rf /tmp/gcc/usr/share
+mkdir -p /opt/sysroot/Programs/gcc/8.3.0
+ln -s 8.3.0 /opt/sysroot/Programs/gcc/current
+cp -rv /tmp/gcc/usr/* /opt/sysroot/Programs/gcc/8.3.0
+rm -rf /tmp/gcc
+ln -s arm-linux-gnueabihf-gcc /opt/sysroot/Programs/gcc/8.3.0/bin/cc
+
+for file in /opt/sysroot/Programs/gcc/8.3.0/bin/*
+do
+  ln -s /Programs/gcc/8.3.0/bin/$(basename $file) /opt/sysroot/System/Index/Binaries/$(basename $file)
+done
+
+for file in /opt/sysroot/Programs/gcc/8.3.0/include/*
+do
+  ln -s /Programs/gcc/8.3.0/include/$(basename $file) /opt/sysroot/System/Index/Includes/$(basename $file)
+done
+
+for file in /opt/sysroot/Programs/gcc/8.3.0/lib/*
+do
+  ln -s /Programs/gcc/8.3.0/lib/$(basename $file) /opt/sysroot/System/Index/Libraries/$(basename $file)
+done
+
+#NEED TO PUT LIBEXEC AT ANOTHER LOCATION THAN BIN!!
+for file in /opt/sysroot/Programs/gcc/8.3.0/libexec/*
+do
+  ln -s /Programs/gcc/8.3.0/libexec/$(basename $file) /opt/sysroot/System/Index/Binaries/$(basename $file)
+done
