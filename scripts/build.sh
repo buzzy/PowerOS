@@ -25,6 +25,7 @@ if [ ! -d "/opt/kernel" ]; then
   tar xfv /opt/kernel.tar.gz -C /opt/kernel
 fi
 cd /opt/kernel
+patch -p1 < /opt/PowerOS/patches/linux-3.18-hide-legacy-dirs.patch
 cp include/linux/compiler-gcc5.h include/linux/compiler-gcc8.h
 cat /opt/PowerOS/config/config.chromeos /opt/PowerOS/config/config.chromeos.extra > .config
 cp /opt/wireless-regdb/db.txt /opt/kernel/net/wireless
@@ -48,7 +49,7 @@ make INSTALL_DTBS_PATH="/opt/sysroot/Programs/linux-kernel/3.18.0-19095-g86596f5
 cp /opt/PowerOS/signing/kernel.its .
 mkimage -D "-I dts -O dtb -p 2048" -f kernel.its vmlinux.uimg
 dd if=/dev/zero of=bootloader.bin bs=512 count=1
-echo "console=tty1 init=/System/Index/bin/init root=PARTUUID=%U/PARTNROFF=1 rootwait rw noinitrd" > cmdline
+echo "console=tty1 init=/sbin/init root=PARTUUID=%U/PARTNROFF=1 rootwait rw noinitrd" > cmdline
 vbutil_kernel --pack vmlinux.kpart --version 1 --vmlinuz vmlinux.uimg --arch aarch64 --keyblock /opt/PowerOS/signing/kernel.keyblock --signprivate /opt/PowerOS/signing/kernel_data_key.vbprivk --config cmdline --bootloader bootloader.bin
 mkdir -p /opt/sysroot/Programs/linux-kernel/3.18.0-19095-g86596f58eadf/image
 cp vmlinux.kpart /opt/sysroot/Programs/linux-kernel/3.18.0-19095-g86596f58eadf/image
@@ -69,15 +70,8 @@ cd /opt
 wget https://busybox.net/downloads/busybox-1.30.1.tar.bz2
 tar xfv busybox-1.30.1.tar.bz2
 cd busybox-1.30.1
-sed -i 's/\/etc\/inittab/\/System\/Settings\/busybox\/inittab/g' init/init.c
-sed -i 's/\/etc\/passwd/\/System\/Settings\/passwd/g' include/libbb.h
-sed -i 's/\/etc\/group/\/System\/Settings\/group/g' include/libbb.h
-sed -i 's/\/etc\/fstab/\/System\/Settings\/fstab/g' util-linux/mount.c
-sed -i 's/\/etc\/mdev.conf/\/System\/Settings\/busybox\/mdev.conf/g' util-linux/mdev.c
-sed -i 's/\/etc\/resolv.conf/\/System\/Settings\/resolv.conf/g' networking/nslookup.c
 cp /opt/PowerOS/config/config.busybox .config
 make CFLAGS="-O2 -s" -j$(nproc)
-#RE-COMPILE WITH NON-STATIC!
 make install
 mkdir -p /opt/sysroot/Programs/busybox/1.30.1/bin
 ln -s 1.30.1 /opt/sysroot/Programs/busybox/current
