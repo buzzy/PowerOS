@@ -1,4 +1,4 @@
-#!/System/Index/bin/ash
+#!/System/Index/Binaries/ash
 
 #Mount all drives
 #mount -t tmpfs -o size=64k,mode=0755 tmpfs /dev
