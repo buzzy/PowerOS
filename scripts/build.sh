@@ -149,3 +149,60 @@ for file in /opt/sysroot/Programs/glibc/2.29/sbin/*
 do
   ln -s /Programs/glibc/2.29/sbin/$(basename $file) /opt/sysroot/System/Index/Binaries/$(basename $file)
 done
+
+#BINUTILS
+cd /opt
+wget https://ftp.yzu.edu.tw/gnu/binutils/binutils-2.32.tar.xz
+tar xfv binutils-2.32.tar.xz
+cd binutils-2.32
+
+./configure \
+  CFLAGS="-O2 -s" \
+  --host=arm-linux-gnueabihf \
+  --prefix=/usr \
+  --with-sysroot=/ \
+  --with-float=hard \
+  --disable-werror \
+  --disable-multilib \
+  --disable-sim \
+  --disable-gdb \
+  --disable-nls \
+  --disable-static \
+  --enable-ld=default \
+  --enable-gold=yes \
+  --enable-threads \
+  --enable-plugins
+  
+make tooldir=/usr -j$(nproc)
+make tooldir=/usr install DESTDIR=/tmp/binutils
+rm -rf /tmp/binutils/usr/share
+mkdir -p /opt/sysroot/Programs/binutils/2.32
+ln -s 2.32 /opt/sysroot/Programs/binutils/current
+cp -rv /tmp/binutils/usr/* /opt/sysroot/Programs/binutils/2.32
+rm -rf /tmp/binutils
+
+for file in /opt/sysroot/Programs/binutils/2.32/bin/*
+do
+  ln -s /Programs/binutils/2.32/bin/$(basename $file) /opt/sysroot/System/Index/Binaries/$(basename $file)
+done
+
+for file in /opt/sysroot/Programs/binutils/2.32/include/*
+do
+  ln -s /Programs/binutils/2.32/include/$(basename $file) /opt/sysroot/System/Index/Includes/$(basename $file)
+done
+
+for file in /opt/sysroot/Programs/binutils/2.32/lib/*
+do
+  ln -s /Programs/binutils/2.32/lib/$(basename $file) /opt/sysroot/System/Index/Libraries/$(basename $file)
+done
+
+#GCC
+cd /opt
+wget http://ftp.tsukuba.wide.ad.jp/software/gcc/releases/gcc-8.3.0/gcc-8.3.0.tar.xz
+tar xfv gcc-8.3.0.tar.xz
+cd gcc-8.3.0
+./contrib/download_prerequisites
+mkdir build
+cd build
+
+
