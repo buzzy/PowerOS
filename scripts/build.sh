@@ -72,6 +72,7 @@ cd busybox-1.30.1
 sed -i 's/\/etc\/inittab/\/System\/Settings\/busybox\/inittab/g' init/init.c
 sed -i 's/\/etc\/passwd/\/System\/Settings\/passwd/g' include/libbb.h
 sed -i 's/\/etc\/group/\/System\/Settings\/group/g' include/libbb.h
+sed -i 's/\/etc\/fstab/\/System\/Settings\/fstab/g' util-linux/mount.c
 cp /opt/PowerOS/config/config.busybox .config
 make CFLAGS="-O2 -s" -j$(nproc)
 #RE-COMPILE WITH NON-STATIC!
