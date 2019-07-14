@@ -378,4 +378,42 @@ link_files /System/Index/Includes /Programs/zlib/1.2.11/include
 link_files /System/Index/Libraries /Programs/zlib/1.2.11/lib
 link_files /System/Index/Shared /Programs/zlib/1.2.11/share
 
+#openssl
+cd /opt
+wget https://www.openssl.org/source/openssl-1.1.1c.tar.gz
+tar xfv openssl-1.1.1c.tar.gz
+cd openssl-1.1.1c
+
+./Configure \
+  -DL_ENDIAN \
+  shared \
+  zlib-dynamic \
+  --prefix=/ \
+  --openssldir=/etc/ssl \
+  --libdir=lib \
+  linux-armv4
+make \
+CC="arm-linux-gnueabihf-gcc --sysroot=/opt/sysroot" \
+CFLAGS="-O2 -s -I/opt/sysroot/Programs/zlib/1.2.11/include" \
+PROCESSOR=ARM
+make install DESTDIR=/opt/sysroot/Programs/openssl/1.1.1c
+ln -s 1.1.1c /opt/sysroot/Programs/openssl/current
+mv /opt/sysroot/Programs/openssl/1.1.1c/lib/pkgconfig /opt/sysroot/Programs/openssl/1.1.1c/share
+rm -rf /opt/sysroot/Programs/openssl/1.1.1c/lib/{libcrypto.a,libssl.a}
+rm -rf /opt/sysroot/Programs/openssl/1.1.1c/share/{doc,man}
+
+link_files /System/Index/Binaries /Programs/openssl/1.1.1c/bin
+link_files /System/Settings /Programs/openssl/1.1.1c/etc
+link_files /System/Index/Includes /Programs/openssl/1.1.1c/include
+link_files /System/Index/Libraries /Programs/openssl/1.1.1c/lib
+link_files /System/Index/Shared /Programs/openssl/1.1.1c/shared
+
+#ncurses
+cd /opt
+wget https://ftp.gnu.org/pub/gnu/ncurses/ncurses-6.1.tar.gz
+tar xfv ncurses-6.1.tar.gz
+cd ncurses-6.1
+
+
+
 
