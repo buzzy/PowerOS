@@ -13,14 +13,14 @@ case $1 in
 			route add default gw $i dev $interface
 		done
 
-		truncate -s 0 /etc/resolv.conf
+		truncate -s 0 /System/Settings/resolv.conf
 
 		if [ -n "$domain" ]; then
-			echo "search $domain" >> /etc/resolv.conf
+			echo "search $domain" >> /System/Settings/resolv.conf
 		fi
 
 		for i in $dns; do
-			echo "nameserver $i" >> /etc/resolv.conf
+			echo "nameserver $i" >> /System/Settings/resolv.conf
 		done
 	;;
 esac
