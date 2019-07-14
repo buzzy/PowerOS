@@ -414,6 +414,43 @@ wget https://ftp.gnu.org/pub/gnu/ncurses/ncurses-6.1.tar.gz
 tar xfv ncurses-6.1.tar.gz
 cd ncurses-6.1
 
+./configure \
+  CFLAGS="-O2 -s --sysroot=/opt/sysroot" \
+  --host=arm-linux-gnueabihf \
+  --prefix= \
+  --with-shared \
+  --without-debug \
+  --disable-stripping \
+  --without-manpages \
+  --enable-static=no \
+  --without-ada
+make -j$(nproc)
+make install DESTDIR=/opt/sysroot/Programs/ncurses/6.1
+ln -s 6.1 /opt/sysroot/Programs/ncurses/current
+unlink /opt/sysroot/Programs/ncurses/6.1/lib/terminfo
+rm -rf /opt/sysroot/Programs/ncurses/6.1/lib/{libform.a,libmenu.a,libncurses++.a,libncurses.a,libpanel.a}
 
+link_files /System/Index/Binaries /Programs/ncurses/6.1/bin
+link_files /System/Index/Includes /Programs/ncurses/6.1/include
+link_files /System/Index/Libraries /Programs/ncurses/6.1/lib
+link_files /System/Index/Shared /Programs/ncurses/6.1/share
 
+#wpa_supplicant
+cd /opt
+wget https://w1.fi/releases/wpa_supplicant-2.8.tar.gz
+tar xfv wpa_supplicant-2.8.tar.gz
+cd wpa_supplicant-2.8/wpa_supplicant
+cp defconfig .config
+sed -i '/CONFIG_CTRL_IFACE_DBUS_NEW=y/d' .config
+sed -i '/CONFIG_CTRL_IFACE_DBUS_INTRO=y/d' .config
+CC="arm-linux-gnueabihf-gcc --sysroot=/opt/sysroot/Programs/glibc/2.29" \
+PKG_CONFIG_PATH=/opt/sysroot/Programs/libnl/3.4.0/share/pkgconfig \
+CFLAGS="--sysroot=/opt/sysroot -O2 -s -I/opt/sysroot/Programs/libnl/3.4.0/include/libnl3 -I/opt/sysroot/Programs/openssl/1.1.1c/include" \
+LDFLAGS="-L/opt/sysroot/Programs/libnl/3.4.0/lib -lnl-3 -L/opt/sysroot/Programs/openssl/1.1.1c/lib" \
+make BINDIR=/sbin LIBDIR=/lib
+mkdir -p /opt/sysroot/Programs/wpa_supplicant/2.8/sbin
+ln -s 2.8 /opt/sysroot/Programs/wpa_supplicant/current
+install -v -m755 wpa_{cli,passphrase,supplicant} /opt/sysroot/Programs/wpa_supplicant/2.8/sbin
+
+link_files /System/Index/Binaries /Programs/wpa_supplicant/2.8/sbin
 
