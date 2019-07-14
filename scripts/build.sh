@@ -345,8 +345,15 @@ cd /opt
 wget https://www.kernel.org/pub/software/network/iw/iw-5.0.1.tar.xz
 tar xfv iw-5.0.1.tar.xz
 cd iw-5.0.1
-CC="arm-linux-gnueabihf-gcc --sysroot=/opt/sysroot" \
-PKG_CONFIG_PATH=/opt/sysroot/System/Index/Shared/pkgconfig \
-CFLAGS="--sysroot=/opt/sysroot -O2 -s -I/opt/sysroot/System/Index/Includes/libnl3" \
-LDFLAGS="-L/opt/sysroot/System/Index/Libraries -lnl-3" \
+CC="arm-linux-gnueabihf-gcc --sysroot=/opt/sysroot/Programs/glibc/2.29" \
+PKG_CONFIG_PATH=/opt/sysroot/Programs/libnl/3.4.0/share/pkgconfig \
+CFLAGS="--sysroot=/opt/sysroot -O2 -s -I/opt/sysroot/Programs/libnl/3.4.0/include/libnl3" \
+LDFLAGS="-L/opt/sysroot/Programs/libnl/3.4.0/lib -lnl-3" \
+make
+PKG_CONFIG_PATH=/opt/sysroot/Programs/libnl/3.4.0/share/pkgconfig \
+make DESTDIR=/opt/sysroot/Programs/iw/5.0.1 PREFIX=/ install
+ln -s 5.0.1 /opt/sysroot/Programs/wi/current
+rm -rf /opt/sysroot/Programs/iw/5.0.1/share
+
+link_files /System/Index/Binaries /Programs/iw/5.0.1/sbin
 
