@@ -163,6 +163,7 @@ cd binutils-2.32
 ./configure \
   CFLAGS="-O2 -s" \
   --host=arm-linux-gnueabihf \
+  --prefix=/ \
   --with-sysroot=/ \
   --with-float=hard \
   --disable-werror \
@@ -176,9 +177,9 @@ cd binutils-2.32
   --enable-threads \
   --enable-plugins
   
-make -j$(nproc)
-make install DESTDIR=/opt/sysroot/Programs/binutils/2.32
-rm -rf /opt/sysroot/Programs/binutils/2.32/share
+make tooldir=/ -j$(nproc)
+make tooldir=/ install DESTDIR=/opt/sysroot/Programs/binutils/2.32
+rm -rf /opt/sysroot/Programs/binutils/2.32/{share,lib/ldscripts}
 ln -s 2.32 /opt/sysroot/Programs/binutils/current
 
 for file in /opt/sysroot/Programs/binutils/2.32/bin/*
@@ -211,7 +212,7 @@ cd build
   --target=arm-linux-gnueabihf \
   --with-sysroot=/ \
   --with-float=hard \
-  --prefix=/usr \
+  --prefix=/ \
   --enable-threads=posix \
   --enable-languages=c,c++ \
   --enable-__cxa_atexit \
