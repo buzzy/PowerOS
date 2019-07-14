@@ -2,6 +2,15 @@
 set -e
 set -x
 
+#FUNCTIONS
+link_files () {
+  #$1 = TARGET DIR
+  #$2 = SOURCE DIR
+  
+  find $2 -mindepth 1 -depth -type d -printf "%P\n" | while read dir; do mkdir -p "$dir"; done
+  find $2 -type f -printf "%P\n" | while read file; do ln -s "$1/$file" "$file"; done  
+}
+
 #FETCH NEEDED TOOLS
 apt-get install -y gcc-8-aarch64-linux-gnu gcc-8-arm-linux-gnueabihf gawk bison wget patch build-essential u-boot-tools bc vboot-kernel-utils libncurses5-dev g++-arm-linux-gnueabihf flex texinfo unzip help2man libtool-bin python3 git nano kmod pkg-config
 
