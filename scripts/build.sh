@@ -90,8 +90,8 @@ cp /tmp/busybox/bin/busybox /opt/sysroot/Programs/busybox/1.30.1/bin
 find /tmp/busybox/bin/* -type l -execdir ln -s /Programs/busybox/1.30.1/bin/busybox /opt/sysroot/System/Index/Binaries/{} ';'
 find /tmp/busybox/sbin/* -type l -execdir ln -s /Programs/busybox/1.30.1/bin/busybox /opt/sysroot/System/Index/Binaries/{} ';'
 rm -fr /tmp/busybox
-mkdir -p /opt/sysroot/Programs/busybox/1.30.1/etc
-ln -s /Programs/busybox/1.30.1/etc /opt/sysroot/System/Settings/busybox
+#mkdir -p /opt/sysroot/Programs/busybox/1.30.1/etc
+#ln -s /Programs/busybox/1.30.1/etc /opt/sysroot/System/Settings/busybox
 
 #GLIBC
 cd /opt
@@ -125,13 +125,8 @@ cd build
   --disable-werror
 
 make -j$(nproc)
-make install DESTDIR=/tmp/glibc
-rm -rf /tmp/glibc/libexec
-rm -rf /tmp/glibc/share
-rm -rf /tmp/glibc/var
-mkdir -p /opt/sysroot/Programs/glibc/2.29
-cp -rv /tmp/glibc/* /opt/sysroot/Programs/glibc/2.29
-rm -rf /tmp/glibc
+make install DESTDIR=/opt/sysroot/Programs/glibc/2.29
+rm -rf /opt/sysroot/Programs/glibc/2.29/{libexec,share,var}
 ln -s 2.29 /opt/sysroot/Programs/glibc/current
 
 for file in /opt/sysroot/Programs/glibc/2.29/bin/*
@@ -168,7 +163,6 @@ cd binutils-2.32
 ./configure \
   CFLAGS="-O2 -s" \
   --host=arm-linux-gnueabihf \
-  --prefix=/usr \
   --with-sysroot=/ \
   --with-float=hard \
   --disable-werror \
@@ -182,13 +176,10 @@ cd binutils-2.32
   --enable-threads \
   --enable-plugins
   
-make tooldir=/usr -j$(nproc)
-make tooldir=/usr install DESTDIR=/tmp/binutils
-rm -rf /tmp/binutils/usr/share
-mkdir -p /opt/sysroot/Programs/binutils/2.32
+make -j$(nproc)
+make install DESTDIR=/opt/sysroot/Programs/binutils/2.32
+rm -rf /opt/sysroot/Programs/binutils/2.32/share
 ln -s 2.32 /opt/sysroot/Programs/binutils/current
-cp -rv /tmp/binutils/usr/* /opt/sysroot/Programs/binutils/2.32
-rm -rf /tmp/binutils
 
 for file in /opt/sysroot/Programs/binutils/2.32/bin/*
 do
@@ -218,9 +209,9 @@ cd build
   CFLAGS="-O2 -s" \
   --host=arm-linux-gnueabihf \
   --target=arm-linux-gnueabihf \
-  --prefix=/usr \
   --with-sysroot=/ \
   --with-float=hard \
+  --prefix=/usr \
   --enable-threads=posix \
   --enable-languages=c,c++ \
   --enable-__cxa_atexit \
@@ -239,12 +230,9 @@ cd build
   --disable-static
 
 make -j$(nproc)
-make DESTDIR=/tmp/gcc install
-rm -rf /tmp/gcc/usr/share
-mkdir -p /opt/sysroot/Programs/gcc/8.3.0
+make install DESTDIR=/opt/sysroot/Programs/gcc/8.3.0
+rm -rf /opt/sysroot/Programs/gcc/8.3.0/share
 ln -s 8.3.0 /opt/sysroot/Programs/gcc/current
-cp -rv /tmp/gcc/usr/* /opt/sysroot/Programs/gcc/8.3.0
-rm -rf /tmp/gcc
 ln -s arm-linux-gnueabihf-gcc /opt/sysroot/Programs/gcc/8.3.0/bin/cc
 
 for file in /opt/sysroot/Programs/gcc/8.3.0/bin/*
@@ -262,8 +250,8 @@ do
   ln -s /Programs/gcc/8.3.0/lib/$(basename $file) /opt/sysroot/System/Index/Libraries/$(basename $file)
 done
 
-#NEED TO PUT LIBEXEC AT ANOTHER LOCATION THAN BIN!!
 for file in /opt/sysroot/Programs/gcc/8.3.0/libexec/*
 do
-  ln -s /Programs/gcc/8.3.0/libexec/$(basename $file) /opt/sysroot/System/Index/Binaries/$(basename $file)
+  ln -s /Programs/gcc/8.3.0/libexec/$(basename $file) /opt/sysroot/System/Index/Libraries/libexec/$(basename $file)
 done
+
