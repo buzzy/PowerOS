@@ -87,8 +87,6 @@ cp /tmp/busybox/bin/busybox /opt/sysroot/Programs/busybox/1.30.1/bin
 find /tmp/busybox/bin/* -type l -execdir ln -s /Programs/busybox/1.30.1/bin/busybox /opt/sysroot/System/Index/Binaries/{} ';'
 find /tmp/busybox/sbin/* -type l -execdir ln -s /Programs/busybox/1.30.1/bin/busybox /opt/sysroot/System/Index/Binaries/{} ';'
 rm -fr /tmp/busybox
-#mkdir -p /opt/sysroot/Programs/busybox/1.30.1/etc
-#ln -s /Programs/busybox/1.30.1/etc /opt/sysroot/System/Settings/busybox
 
 #GLIBC
 cd /opt
@@ -125,9 +123,10 @@ make -j$(nproc)
 make install DESTDIR=/opt/sysroot/Programs/glibc/2.29
 rm -rf /opt/sysroot/Programs/glibc/2.29/{libexec,share,var}
 ln -s 2.29 /opt/sysroot/Programs/glibc/current
+cp /opt/sysroot/Programs/glibc/2.29/etc/* /opt/sysroot/System/Settings
+rm -rf /opt/sysroot/Programs/glibc/2.29/etc
 
 link_files /System/Index/Binaries /Programs/glibc/2.29/bin
-link_files /System/Settings /Programs/glibc/2.29/etc
 link_files /System/Index/Includes /Programs/glibc/2.29/include
 link_files /System/Index/Libraries /Programs/glibc/2.29/lib
 link_files /System/Index/Binaries /Programs/glibc/2.29/sbin
@@ -334,8 +333,9 @@ make install DESTDIR=/opt/sysroot/Programs/libnl/3.4.0
 ln -s 3.4.0 /opt/sysroot/Programs/libnl/current
 rm -rf /opt/sysroot/Programs/libnl/3.4.0/share/man
 mv /opt/sysroot/Programs/libnl/3.4.0/lib/pkgconfig /opt/sysroot/Programs/libnl/3.4.0/share
+cp /opt/sysroot/Programs/libnl/3.4.0/etc/* /opt/sysroot/System/Settings
+rm -rf /opt/sysroot/Programs/libnl/3.4.0/etc
 
-link_files /System/Settings /Programs/libnl/3.4.0/etc
 link_files /System/Index/Includes /Programs/libnl/3.4.0/include
 link_files /System/Index/Libraries /Programs/libnl/3.4.0/lib
 link_files /System/Index/Shared /Programs/libnl/3.4.0/share
@@ -401,9 +401,10 @@ ln -s 1.1.1c /opt/sysroot/Programs/openssl/current
 mv /opt/sysroot/Programs/openssl/1.1.1c/lib/pkgconfig /opt/sysroot/Programs/openssl/1.1.1c/share
 rm -rf /opt/sysroot/Programs/openssl/1.1.1c/lib/{libcrypto.a,libssl.a}
 rm -rf /opt/sysroot/Programs/openssl/1.1.1c/share/{doc,man}
+cp /opt/sysroot/Programs/openssl/1.1.1c/etc/* /opt/sysroot/System/Settings
+rm -rf /opt/sysroot/Programs/openssl/1.1.1c/etc
 
 link_files /System/Index/Binaries /Programs/openssl/1.1.1c/bin
-link_files /System/Settings /Programs/openssl/1.1.1c/etc
 link_files /System/Index/Includes /Programs/openssl/1.1.1c/include
 link_files /System/Index/Libraries /Programs/openssl/1.1.1c/lib
 link_files /System/Index/Shared /Programs/openssl/1.1.1c/shared
