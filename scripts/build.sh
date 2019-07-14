@@ -324,6 +324,7 @@ cd libnl-3.4.0
 ./configure \
   CFLAGS="-O2 -s --sysroot=/opt/sysroot" \
   --host=arm-linux-gnueabihf \
+  --prefix=/ \
   --sysconfdir=/etc \
   --disable-cli \
   --disable-static
