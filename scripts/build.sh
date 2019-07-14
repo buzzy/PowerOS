@@ -3,12 +3,9 @@ set -e
 set -x
 
 #FUNCTIONS
-link_files () {
-  #$1 = TARGET DIR
-  #$2 = SOURCE DIR
-  
-  find $2 -mindepth 1 -depth -type d -printf "%P\n" | while read dir; do mkdir -p "$dir"; done
-  find $2 -type f -printf "%P\n" | while read file; do ln -s "$1/$file" "$file"; done  
+link_files () {  
+  find /opt/sysroot$2 -mindepth 1 -depth -type d -printf "%P\n" | while read dir; do mkdir -p "/opt/sysroot$1/$dir"; done
+  find /opt/sysroot$2 -type f -printf "%P\n" | while read file; do ln -s "$2/$file" "/opt/sysroot$1/$file"; done
 }
 
 #FETCH NEEDED TOOLS
@@ -129,30 +126,11 @@ make install DESTDIR=/opt/sysroot/Programs/glibc/2.29
 rm -rf /opt/sysroot/Programs/glibc/2.29/{libexec,share,var}
 ln -s 2.29 /opt/sysroot/Programs/glibc/current
 
-for file in /opt/sysroot/Programs/glibc/2.29/bin/*
-do
-  ln -s /Programs/glibc/2.29/bin/$(basename $file) /opt/sysroot/System/Index/Binaries/$(basename $file)
-done
-
-for file in /opt/sysroot/Programs/glibc/2.29/etc/*
-do
-  ln -s /Programs/glibc/2.29/etc/$(basename $file) /opt/sysroot/System/Settings/$(basename $file)
-done
-
-for file in /opt/sysroot/Programs/glibc/2.29/include/*
-do
-  ln -s /Programs/glibc/2.29/include/$(basename $file) /opt/sysroot/System/Index/Includes/$(basename $file)
-done
-
-for file in /opt/sysroot/Programs/glibc/2.29/lib/*
-do
-  ln -s /Programs/glibc/2.29/lib/$(basename $file) /opt/sysroot/System/Index/Libraries/$(basename $file)
-done
-
-for file in /opt/sysroot/Programs/glibc/2.29/sbin/*
-do
-  ln -s /Programs/glibc/2.29/sbin/$(basename $file) /opt/sysroot/System/Index/Binaries/$(basename $file)
-done
+link_files /System/Index/Binaries /Programs/glibc/2.29/bin
+link_files /System/Settings /Programs/glibc/2.29/etc
+link_files /System/Index/Includes /Programs/glibc/2.29/include
+link_files /System/Index/Libraries /Programs/glibc/2.29/lib
+link_files /System/Index/Binaries /Programs/glibc/2.29/sbin
 
 #BINUTILS
 cd /opt
@@ -182,20 +160,9 @@ make tooldir=/ install DESTDIR=/opt/sysroot/Programs/binutils/2.32
 rm -rf /opt/sysroot/Programs/binutils/2.32/{share,lib/ldscripts}
 ln -s 2.32 /opt/sysroot/Programs/binutils/current
 
-for file in /opt/sysroot/Programs/binutils/2.32/bin/*
-do
-  ln -s /Programs/binutils/2.32/bin/$(basename $file) /opt/sysroot/System/Index/Binaries/$(basename $file)
-done
-
-for file in /opt/sysroot/Programs/binutils/2.32/include/*
-do
-  ln -s /Programs/binutils/2.32/include/$(basename $file) /opt/sysroot/System/Index/Includes/$(basename $file)
-done
-
-for file in /opt/sysroot/Programs/binutils/2.32/lib/*
-do
-  ln -s /Programs/binutils/2.32/lib/$(basename $file) /opt/sysroot/System/Index/Libraries/$(basename $file)
-done
+link_files /System/Index/Binaries /Programs/binutils/2.32/bin
+link_files /System/Index/Includes /Programs/binutils/2.32/include
+link_files /System/Index/Libraries /Programs/binutils/2.32/lib
 
 #GCC
 cd /opt
@@ -236,23 +203,29 @@ rm -rf /opt/sysroot/Programs/gcc/8.3.0/share
 ln -s 8.3.0 /opt/sysroot/Programs/gcc/current
 ln -s arm-linux-gnueabihf-gcc /opt/sysroot/Programs/gcc/8.3.0/bin/cc
 
-for file in /opt/sysroot/Programs/gcc/8.3.0/bin/*
-do
-  ln -s /Programs/gcc/8.3.0/bin/$(basename $file) /opt/sysroot/System/Index/Binaries/$(basename $file)
-done
+link_files /System/Index/Binaries /Programs/gcc/8.3.0/bin
+link_files /System/Index/Includes /Programs/gcc/8.3.0/include
+link_files /System/Index/Libraries /Programs/gcc/8.3.0/lib
+link_files /System/Index/Libraries/libexec /Programs/gcc/8.3.0/libexec
 
-for file in /opt/sysroot/Programs/gcc/8.3.0/include/*
-do
-  ln -s /Programs/gcc/8.3.0/include/$(basename $file) /opt/sysroot/System/Index/Includes/$(basename $file)
-done
+#bison
+cd /opt
+wget http://ftp.twaren.net/Unix/GNU/gnu/bison/bison-3.4.1.tar.xz
+tar xfv bison-3.4.1.tar.xz
+cd bison-3.4.1
 
-for file in /opt/sysroot/Programs/gcc/8.3.0/lib/*
-do
-  ln -s /Programs/gcc/8.3.0/lib/$(basename $file) /opt/sysroot/System/Index/Libraries/$(basename $file)
-done
+./configure \
+  CFLAGS="-O2 -s --sysroot=/opt/sysroot" \
+  --host=arm-linux-gnueabihf \
+  --prefix=/ \
+  --disable-yacc \
+  --disable-nls
 
-for file in /opt/sysroot/Programs/gcc/8.3.0/libexec/*
-do
-  ln -s /Programs/gcc/8.3.0/libexec/$(basename $file) /opt/sysroot/System/Index/Libraries/libexec/$(basename $file)
-done
+make -j1
+make install DESTDIR=/opt/sysroot/Programs/bison/3.4.1
+ln -s 3.4.1 /opt/sysroot/Programs/bison/current
+rm -rf /opt/sysroot/Programs/bison/3.4.1/share/{bison,doc,info,man}
+
+link_files /System/Index/Binaries /Programs/bison/3.4.1/bin
+link_files /System/Index/Shared /Programs/bison/3.4.1/share
 
