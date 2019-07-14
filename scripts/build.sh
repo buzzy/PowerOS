@@ -454,3 +454,7 @@ install -v -m755 wpa_{cli,passphrase,supplicant} /opt/sysroot/Programs/wpa_suppl
 
 link_files /System/Index/Binaries /Programs/wpa_supplicant/2.8/sbin
 
+#STRIP ALL BINARIES TO SAVE SPACE
+find /opt/sysroot/Programs/*/current/bin -executable -type f | xargs arm-linux-gnueabihf-strip -s || true
+find /opt/sysroot/Programs/*/current/sbin -executable -type f | xargs arm-linux-gnueabihf-strip -s || true
+find /opt/sysroot/Programs/*/current/libexec -executable -type f | xargs arm-linux-gnueabihf-strip -s || true
