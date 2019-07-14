@@ -357,3 +357,25 @@ rm -rf /opt/sysroot/Programs/iw/5.0.1/share
 
 link_files /System/Index/Binaries /Programs/iw/5.0.1/sbin
 
+#zlib
+cd /opt
+wget https://zlib.net/zlib-1.2.11.tar.gz
+tar xfv zlib-1.2.11.tar.gz
+cd zlib-1.2.11
+
+./configure \
+  --prefix=/ \
+  --enable-static=no \
+  --shared
+
+make CC="arm-linux-gnueabihf-gcc --sysroot=/opt/sysroot" CFLAGS="-O2 -s" LDSHARED="arm-linux-gnueabihf-gcc -shared -Wl,-soname,libz.so.1,--version-script,zlib.map"
+make prefix=/ DESTDIR=/opt/sysroot/Programs/zlib/1.2.11 install
+ln -s 1.2.11 /opt/sysroot/Programs/zlib/current
+mv /opt/sysroot/Programs/zlib/1.2.11/lib/pkgconfig /opt/sysroot/Programs/zlib/1.2.11/share
+rm -rf //opt/sysroot/Programs/zlib/1.2.11/share/man
+
+link_files /System/Index/Includes /Programs/zlib/1.2.11/include
+link_files /System/Index/Libraries /Programs/zlib/1.2.11/lib
+link_files /System/Index/Shared /Programs/zlib/1.2.11/share
+
+
