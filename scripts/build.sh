@@ -400,7 +400,7 @@ ln -s 1.1.1c /opt/sysroot/Programs/openssl/current
 mv /opt/sysroot/Programs/openssl/1.1.1c/lib/pkgconfig /opt/sysroot/Programs/openssl/1.1.1c/share
 rm -rf /opt/sysroot/Programs/openssl/1.1.1c/lib/{libcrypto.a,libssl.a}
 rm -rf /opt/sysroot/Programs/openssl/1.1.1c/share/{doc,man}
-cp /opt/sysroot/Programs/openssl/1.1.1c/etc/* /opt/sysroot/System/Settings
+cp -rv /opt/sysroot/Programs/openssl/1.1.1c/etc/* /opt/sysroot/System/Settings
 rm -rf /opt/sysroot/Programs/openssl/1.1.1c/etc
 
 link_files /System/Index/Binaries /Programs/openssl/1.1.1c/bin
