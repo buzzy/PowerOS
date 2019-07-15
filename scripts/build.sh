@@ -467,6 +467,9 @@ cd GoboHide-1.3
   --prefix=/
 make -j$(nproc)
 make install DESTDIR=/opt/sysroot/Programs/gobohide/1.3
+rm -rf /opt/sysroot/Programs/gobohide/1.3/{etc,share}
+
+link_files /System/Index/Binaries /Programs/gobohide/1.3/bin
 
 #STRIP ALL BINARIES TO SAVE SPACE
 find /opt/sysroot/Programs/*/current/bin -executable -type f | xargs arm-linux-gnueabihf-strip -s || true
