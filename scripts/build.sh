@@ -456,6 +456,7 @@ link_files /System/Index/Binaries /Programs/wpa_supplicant/2.8/sbin
 #gobohide
 cd /opt
 wget https://github.com/gobolinux/GoboHide/releases/download/1.3/GoboHide-1.3.tar.gz
+tar xfv GoboHide-1.3.tar.gz
 cd GoboHide-1.3
 ./autogen.sh
 ./configure \
