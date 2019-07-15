@@ -333,7 +333,7 @@ make install DESTDIR=/opt/sysroot/Programs/libnl/3.4.0
 ln -s 3.4.0 /opt/sysroot/Programs/libnl/current
 rm -rf /opt/sysroot/Programs/libnl/3.4.0/share/man
 mv /opt/sysroot/Programs/libnl/3.4.0/lib/pkgconfig /opt/sysroot/Programs/libnl/3.4.0/share
-cp /opt/sysroot/Programs/libnl/3.4.0/etc/* /opt/sysroot/System/Settings
+cp -rv /opt/sysroot/Programs/libnl/3.4.0/etc/* /opt/sysroot/System/Settings
 rm -rf /opt/sysroot/Programs/libnl/3.4.0/etc
 
 link_files /System/Index/Includes /Programs/libnl/3.4.0/include
