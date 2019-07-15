@@ -9,7 +9,7 @@ link_files () {
 }
 
 #FETCH NEEDED TOOLS
-apt-get install -y gcc-8-aarch64-linux-gnu gcc-8-arm-linux-gnueabihf gawk bison wget patch build-essential u-boot-tools bc vboot-kernel-utils libncurses5-dev g++-arm-linux-gnueabihf flex texinfo unzip help2man libtool-bin python3 git nano kmod pkg-config
+apt-get install -y gcc-8-aarch64-linux-gnu gcc-8-arm-linux-gnueabihf gawk bison wget patch build-essential u-boot-tools bc vboot-kernel-utils libncurses5-dev g++-arm-linux-gnueabihf flex texinfo unzip help2man libtool-bin python3 git nano kmod pkg-config autogen autopoint gettext libnl-cli-3-dev
 
 #CREATE DIR STRUCTURE
 rm -fr /opt/sysroot/*
@@ -323,9 +323,8 @@ cd libnl-3.4.0
 ./configure \
   CFLAGS="-O2 -s --sysroot=/opt/sysroot" \
   --host=arm-linux-gnueabihf \
-  --prefix=/ \
+  --prefix= \
   --sysconfdir=/etc \
-  --disable-cli \
   --disable-static
   
 make -j$(nproc)
@@ -456,8 +455,18 @@ link_files /System/Index/Binaries /Programs/wpa_supplicant/2.8/sbin
 
 #gobohide
 cd /opt
-git clone https://github.com/gobolinux/GoboHide.git
-cd GoboHide
+wget https://github.com/gobolinux/GoboHide/releases/download/1.3/GoboHide-1.3.tar.gz
+cd GoboHide-1.3
+./autogen.sh
+./configure \
+  PKG_CONFIG_PATH=/opt/sysroot/Programs/libnl/3.4.0/share/pkgconfig \
+  CFLAGS="-O2 -s --sysroot=/opt/sysroot/Programs/glibc/2.29 -I/opt/sysroot/Programs/libnl/3.4.0/include/libnl3" \
+  LDFLAGS="-L/opt/sysroot/Programs/libnl/3.4.0/lib" \
+  LIBS="-lnl-3" \
+  --host=arm-linux-gnueabihf \
+  --prefix=/
+make -j$(nproc)
+make install DESTDIR=/opt/sysroot/Programs/gobohide/1.3
 
 #STRIP ALL BINARIES TO SAVE SPACE
 find /opt/sysroot/Programs/*/current/bin -executable -type f | xargs arm-linux-gnueabihf-strip -s || true
