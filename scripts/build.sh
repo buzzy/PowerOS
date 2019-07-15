@@ -365,7 +365,6 @@ cd zlib-1.2.11
 
 ./configure \
   --prefix=/ \
-  --enable-static=no \
   --shared
 
 make CC="arm-linux-gnueabihf-gcc --sysroot=/opt/sysroot" CFLAGS="-O2 -s" LDSHARED="arm-linux-gnueabihf-gcc -shared -Wl,-soname,libz.so.1,--version-script,zlib.map"
