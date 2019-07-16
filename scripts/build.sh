@@ -5,7 +5,7 @@ set -x
 #FUNCTIONS
 link_files () {  
   find /opt/sysroot$2 -mindepth 1 -depth -type d -printf "%P\n" | while read dir; do mkdir -p "/opt/sysroot$1/$dir"; done
-  find /opt/sysroot$2 -type f -printf "%P\n" | while read file; do ln -s "$2/$file" "/opt/sysroot$1/$file"; done
+  find /opt/sysroot$2 -not -type d -printf "%P\n" | while read file; do ln -s "$2/$file" "/opt/sysroot$1/$file"; done
 }
 
 #FETCH NEEDED TOOLS
