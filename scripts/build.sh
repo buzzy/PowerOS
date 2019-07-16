@@ -468,14 +468,25 @@ link_files /System/Index/Binaries /Programs/wpa_supplicant/2.8/sbin
 #  --prefix=/
 #make -j$(nproc)
 #make install DESTDIR=/opt/sysroot/Programs/gobohide/1.3
+#ln -s 1.3 /opt/sysroot/Programs/gobohide/current
 #rm -rf /opt/sysroot/Programs/gobohide/1.3/{etc,share}
 
 #link_files /System/Index/Binaries /Programs/gobohide/1.3/bin
 
 #gobohide (0.14)
 cd /opt
-wget http://gobolinux.org/download/gobohide/GoboHide-0.14.tar.bz2
+wget https://gobolinux.org/older_downloads/GoboHide-0.14.tar.bz2
 tar xfv GoboHide-0.14.tar.bz2
+./configure \
+  CFLAGS="-O2 -s --sysroot=/opt/sysroot" \
+  --host=arm-linux-gnueabihf \
+  --prefix=/
+make -j$(nproc)
+make install DESTDIR=/opt/sysroot/Programs/gobohide/0.14
+ln -s 0.14 /opt/sysroot/Programs/gobohide/current
+rm -rf /opt/sysroot/Programs/gobohide/0.14/{etc,share}
+
+link_files /System/Index/Binaries /Programs/gobohide/0.14/bin
 
 #STRIP ALL BINARIES TO SAVE SPACE
 find /opt/sysroot/Programs/*/current/bin -executable -type f | xargs arm-linux-gnueabihf-strip -s || true
