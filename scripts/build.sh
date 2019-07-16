@@ -133,7 +133,7 @@ link_files /System/Index/Binaries /Programs/glibc/2.29/sbin
 
 #BINUTILS
 cd /opt
-wget https://ftp.yzu.edu.tw/gnu/binutils/binutils-2.32.tar.xz
+wget https://ftp.gnu.org/gnu/binutils/binutils-2.32.tar.xz
 tar xfv binutils-2.32.tar.xz
 cd binutils-2.32
 
