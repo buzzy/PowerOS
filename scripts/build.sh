@@ -453,24 +453,29 @@ install -v -m755 wpa_{cli,passphrase,supplicant} /opt/sysroot/Programs/wpa_suppl
 
 link_files /System/Index/Binaries /Programs/wpa_supplicant/2.8/sbin
 
-#gobohide
-cd /opt
-wget https://github.com/gobolinux/GoboHide/releases/download/1.3/GoboHide-1.3.tar.gz
-tar xfv GoboHide-1.3.tar.gz
-cd GoboHide-1.3
-./autogen.sh
-./configure \
-  PKG_CONFIG_PATH=/opt/sysroot/Programs/libnl/3.4.0/share/pkgconfig \
-  CFLAGS="-O2 -s --sysroot=/opt/sysroot/Programs/glibc/2.29 -I/opt/sysroot/Programs/libnl/3.4.0/include/libnl3" \
-  LDFLAGS="-L/opt/sysroot/Programs/libnl/3.4.0/lib" \
-  LIBS="-lnl-3" \
-  --host=arm-linux-gnueabihf \
-  --prefix=/
-make -j$(nproc)
-make install DESTDIR=/opt/sysroot/Programs/gobohide/1.3
-rm -rf /opt/sysroot/Programs/gobohide/1.3/{etc,share}
+#gobohide (1.3)
+#cd /opt
+#wget https://github.com/gobolinux/GoboHide/releases/download/1.3/GoboHide-1.3.tar.gz
+#tar xfv GoboHide-1.3.tar.gz
+#cd GoboHide-1.3
+#./autogen.sh
+#./configure \
+#  PKG_CONFIG_PATH=/opt/sysroot/Programs/libnl/3.4.0/share/pkgconfig \
+#  CFLAGS="-O2 -s --sysroot=/opt/sysroot/Programs/glibc/2.29 -I/opt/sysroot/Programs/libnl/3.4.0/include/libnl3" \
+#  LDFLAGS="-L/opt/sysroot/Programs/libnl/3.4.0/lib" \
+#  LIBS="-lnl-3" \
+#  --host=arm-linux-gnueabihf \
+#  --prefix=/
+#make -j$(nproc)
+#make install DESTDIR=/opt/sysroot/Programs/gobohide/1.3
+#rm -rf /opt/sysroot/Programs/gobohide/1.3/{etc,share}
 
-link_files /System/Index/Binaries /Programs/gobohide/1.3/bin
+#link_files /System/Index/Binaries /Programs/gobohide/1.3/bin
+
+#gobohide (0.14)
+cd /opt
+wget http://gobolinux.org/download/gobohide/GoboHide-0.14.tar.bz2
+tar xfv GoboHide-0.14.tar.bz2
 
 #STRIP ALL BINARIES TO SAVE SPACE
 find /opt/sysroot/Programs/*/current/bin -executable -type f | xargs arm-linux-gnueabihf-strip -s || true
