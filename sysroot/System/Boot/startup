@@ -1,16 +1,13 @@
 #!/System/Index/Binaries/ash
 
-#Mount all drives
-#mount -t tmpfs -o size=64k,mode=0755 tmpfs /dev
-#mkdir /dev/pts
-#mount -t devpts devpts /dev/pts
-#mount -t proc proc /proc
-#mount -t sysfs sysfs /sys
-#echo /sbin/mdev > /proc/sys/kernel/hotplug
-#mdev -s
-
 #Prevent kernel messages to console
 dmesg -n 1
+
+#Mount RAM drives
+mkdir -p /dev/pts
+mkdir -p /dev/shm
+mount -t devpts -o gid=4,mode=620 none /dev/pts
+mount -t tmpfs none /dev/shm
 
 #Set hostname
 hostname -F /System/Settings/hostname
