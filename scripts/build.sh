@@ -477,6 +477,7 @@ link_files /System/Index/Binaries /Programs/wpa_supplicant/2.8/sbin
 cd /opt
 wget https://gobolinux.org/older_downloads/GoboHide-0.14.tar.bz2
 tar xfv GoboHide-0.14.tar.bz2
+cd GoboHide-0.14
 ./configure \
   CFLAGS="-O2 -s --sysroot=/opt/sysroot" \
   --host=arm-linux-gnueabihf \
