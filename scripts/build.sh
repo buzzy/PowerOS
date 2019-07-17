@@ -482,6 +482,7 @@ wget -O config.guess 'https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_p
 wget -O config.sub 'https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD'
 ./configure \
   CFLAGS="-O2 -s --sysroot=/opt/sysroot" \
+  LDFLAGS="-static" \
   --host=aarch64-linux-gnu \
   --prefix=/
 make -j$(nproc)
