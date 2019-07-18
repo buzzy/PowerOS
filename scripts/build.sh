@@ -482,8 +482,7 @@ wget -O config.guess 'https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_p
 wget -O config.sub 'https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD'
 ./configure \
   CFLAGS="-O2 -s --sysroot=/opt/sysroot" \
-  LDFLAGS="-static" \
-  --host=aarch64-linux-gnu \
+  --host=arm-linux-gnueabihf \
   --prefix=/
 make -j$(nproc)
 make install DESTDIR=/opt/sysroot/Programs/gobohide/0.14
