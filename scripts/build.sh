@@ -409,7 +409,7 @@ link_files /System/Index/Shared /Programs/openssl/1.1.1c/shared
 
 #ncurses
 cd /opt
-wget https://ftp.gnu.org/pub/gnu/ncurses/ncurses-6.1.tar.gz
+wget https://mirrors.dotsrc.org/gnu/ncurses/ncurses-6.1.tar.gz
 tar xfv ncurses-6.1.tar.gz
 cd ncurses-6.1
 
