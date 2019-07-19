@@ -90,7 +90,7 @@ rm -fr /tmp/busybox
 
 #GLIBC
 cd /opt
-wget https://ftp.gnu.org/gnu/glibc/glibc-2.29.tar.xz
+wget https://mirrors.dotsrc.org/gnu/glibc/glibc-2.29.tar.xz
 tar xfv glibc-2.29.tar.xz
 cd glibc-2.29
 mkdir build
