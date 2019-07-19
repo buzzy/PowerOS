@@ -243,7 +243,7 @@
  		return -EPERM;
  
 +	if (dentry->d_inode) {
-+		ino_t ino = gobohide_lower_inode_nr(dentry);
++		ino_t ino = gobohide_translate_inode_nr(dentry->d_inode);
 +		if (ino)
 +			hidden = gobohide_get(ino, dentry->d_name.name,
 +				dentry->d_name.len, dentry->d_parent);
@@ -280,7 +280,7 @@
  		return -EPERM;
  
 +	if (dentry->d_inode) {
-+		ino_t ino = gobohide_lower_inode_nr(dentry);
++		ino_t ino = gobohide_translate_inode_nr(dentry->d_inode);
 +		if (ino)
 +			hidden = gobohide_get(ino, dentry->d_name.name,
 +				dentry->d_name.len, dentry->d_parent);
@@ -483,7 +483,7 @@
 +#ifdef CONFIG_GOBOHIDE_FS
 +
 +int  gobohide_fs_ioctl(struct inode *inode, unsigned long arg);
-+ino_t gobohide_lower_inode_nr(struct dentry *dentry);
++ino_t gobohide_translate_inode_nr(struct inode *inode);
 +struct hide *gobohide_get(ino_t ino, const char *filename,
 +	int namelen, struct dentry *parent);
 +int  gobohide_put(struct hide *entry);
@@ -492,7 +492,7 @@
 +#else
 +
 +#define gobohide_fs_ioctl(inode, arg) 0
-+#define gobohide_lower_inode_nr(dentry) 0
++#define ino_t gobohide_translate_inode_nr(inode) 0
 +#define gobohide_get(ino, filename, namelen, parent) NULL
 +#define gobohide_put(entry) 0
 +#define gobohide_remove(hide) 0
@@ -594,9 +594,7 @@
 +
 +#include <asm/uaccess.h>
 +
-+#define GOBOHIDE_INODE_EQUALS(p,i) \
-+	(d_inode((p)->dentry)->i_ino == i || \
-+	(d_inode((p)->dentry)->i_sb->s_magic == OVERLAYFS_SUPER_MAGIC))
++#define GOBOHIDE_INODE_EQUALS(p,i) ((p)->dentry->d_inode->i_ino == i)
 +
 +static LIST_HEAD(gobohide_inode_list);
 +static int gobohide_inode_list_size = 0;
@@ -767,15 +765,17 @@
 +	return ret;
 +}
 +
-+ino_t gobohide_lower_inode_nr(struct dentry *dentry)
++ino_t gobohide_translate_inode_nr(struct inode *inode)
 +{
-+	struct inode *inode = d_inode(dentry);
-+	if (inode->i_sb && inode->i_sb->s_magic == OVERLAYFS_SUPER_MAGIC) {
-+		struct dentry *lower = ovl_dentry_real(dentry);
-+		if (lower && d_inode(lower))
-+			inode = d_inode(lower);
++	ino_t ino = inode->i_ino;
++#ifdef CONFIG_UNION_FS
++	if (inode->i_sb->s_op == &unionfs_sops) {
++		/* we must take the inode number from the underlying filesystem */
++		struct inode *lower_inode = unionfs_lower_inode(inode);
++		ino = lower_inode ? lower_inode->i_ino : inode->i_ino;
 +	}
-+	return inode->i_ino;
++#endif
++	return ino;
 +}
 +
 +/**
@@ -828,7 +828,7 @@
 +	}
 +
 +	/* Get updated inode number */
-+	entry->i_ino = gobohide_lower_inode_nr(dentry);
++	entry->i_ino = gobohide_translate_inode_nr(dentry->d_inode);
 +
 +	write_lock_irqsave(&gobohide_inode_rwlock, flags);
 +	old = gobohide_get_unlocked(entry->i_ino, dentry->d_name.name,
@@ -890,7 +890,7 @@
 +	}
 +
 +	/* Get updated inode number */
-+	ino = gobohide_lower_inode_nr(n.filp->f_path.dentry);
++	ino = gobohide_translate_inode_nr(n.filp->f_dentry->d_inode);
 +
 +	write_lock_irqsave(&gobohide_inode_rwlock, flags);
 +	if (gobohide_inode_list_size) {
