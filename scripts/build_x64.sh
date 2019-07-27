@@ -22,17 +22,15 @@ git clone git://git.kernel.org/pub/scm/linux/kernel/git/linville/wireless-regdb.
 #KERNEL
 cd /opt
 export WIFIVERSION=
-if [ ! -d "/opt/kernel" ]; then
-  wget -O /opt/kernel.tar.gz https://chromium.googlesource.com/chromiumos/third_party/kernel/+archive/86596f58eadf.tar.gz
-  mkdir /opt/kernel
-  tar xfv /opt/kernel.tar.gz -C /opt/kernel
-fi
-cd /opt/kernel
-patch -p1 < /opt/PowerOS/patches/linux-3.18-log2.patch
-patch -p1 < /opt/PowerOS/patches/linux-3.18-hide-legacy-dirs.patch
-cp include/linux/compiler-gcc5.h include/linux/compiler-gcc8.h
+wget https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.2.3.tar.xz
+mkdir /opt/kernel
+tar xfv /opt/linux-5.2.3.tar.xz -C /opt/kernel
+cd /opt/kernel/linux-5.2.3
+#patch -p1 < /opt/PowerOS/patches/linux-3.18-log2.patch
+#patch -p1 < /opt/PowerOS/patches/linux-3.18-hide-legacy-dirs.patch
+#cp include/linux/compiler-gcc5.h include/linux/compiler-gcc8.h
 cat /opt/PowerOS/config/config.chromeos /opt/PowerOS/config/config.chromeos.extra > .config
-cp /opt/wireless-regdb/db.txt /opt/kernel/net/wireless
+cp /opt/wireless-regdb/db.txt ./net/wireless
 make oldconfig
 make prepare
 make CFLAGS="-O2 -s" -j$(nproc) Image
