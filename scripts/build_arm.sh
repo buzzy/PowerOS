@@ -79,6 +79,7 @@ wget https://busybox.net/downloads/busybox-1.30.1.tar.bz2
 tar xfv busybox-1.30.1.tar.bz2
 cd busybox-1.30.1
 cp /opt/PowerOS/config/config.busybox .config
+echo 'CONFIG_CROSS_COMPILER_PREFIX="arm-linux-gnueabihf-"' >> .config
 make CFLAGS="-O2 -s" -j$(nproc)
 make install
 mkdir -p /opt/sysroot/Programs/busybox/1.30.1/bin
