@@ -190,8 +190,6 @@ tar xfv bison-3.4.1.tar.xz
 cd bison-3.4.1
 
 ./configure \
-  CFLAGS="-O2 -s --sysroot=/opt/sysroot" \
-  --host=arm-linux-gnueabihf \
   --prefix=/ \
   --disable-yacc \
   --disable-nls
@@ -212,8 +210,6 @@ cd flex-2.6.4
 sed -i "/math.h/a #include <malloc.h>" src/flexdef.h
 
 ./configure \
-  CFLAGS="-O2 -s --sysroot=/opt/sysroot" \
-  --host=arm-linux-gnueabihf \
   --disable-static
 
 make -j$(nproc)
@@ -233,9 +229,7 @@ cd make-4.2.1
 sed -i '211,217 d; 219,229 d; 232 d' glob/glob.c
 
 ./configure \
-  CFLAGS="-O2 -s --sysroot=/opt/sysroot" \
-  --prefix=/ \
-  --host=arm-linux-gnueabihf
+  --prefix=/
 
 make -j$(nproc)
 make install DESTDIR=/opt/sysroot/Programs/make/4.2.1
@@ -254,8 +248,6 @@ sed -i 's/IO_ftrylockfile/IO_EOF_SEEN/' lib/*.c
 echo "#define _IO_IN_BACKUP 0x100" >> lib/stdio-impl.h
 
 ./configure \
-  CFLAGS="-O2 -s --sysroot=/opt/sysroot" \
-  --host=arm-linux-gnueabihf \
   --prefix=/
 
 make -j$(nproc)
@@ -272,15 +264,9 @@ tar xfv pkg-config-0.29.2.tar.gz
 cd pkg-config-0.29.2
 
 ./configure \
-  CFLAGS="-O2 -s --sysroot=/opt/sysroot" \
-  --host=arm-linux-gnueabihf \
   --prefix=/ \
   --with-internal-glib \
-  --disable-host-tool \
-  glib_cv_stack_grows=yes \
-  glib_cv_uscore=no \
-  ac_cv_func_posix_getpwuid_r=yes \
-  ac_cv_func_posix_getgrgid_r=yes
+  --disable-host-tool
 
 make -j$(nproc)
 make install DESTDIR=/opt/sysroot/Programs/pkg-config/0.29.2
@@ -297,8 +283,6 @@ tar xfv libnl-3.4.0.tar.gz
 cd libnl-3.4.0
 
 ./configure \
-  CFLAGS="-O2 -s --sysroot=/opt/sysroot" \
-  --host=arm-linux-gnueabihf \
   --prefix= \
   --sysconfdir=/etc \
   --disable-static
@@ -320,7 +304,7 @@ cd /opt
 wget https://www.kernel.org/pub/software/network/iw/iw-5.0.1.tar.xz
 tar xfv iw-5.0.1.tar.xz
 cd iw-5.0.1
-CC="arm-linux-gnueabihf-gcc --sysroot=/opt/sysroot/Programs/glibc/2.29" \
+CC="gcc --sysroot=/opt/sysroot/Programs/glibc/2.29" \
 PKG_CONFIG_PATH=/opt/sysroot/Programs/libnl/3.4.0/share/pkgconfig \
 CFLAGS="--sysroot=/opt/sysroot -O2 -s -I/opt/sysroot/Programs/libnl/3.4.0/include/libnl3" \
 LDFLAGS="-L/opt/sysroot/Programs/libnl/3.4.0/lib -lnl-3" \
@@ -342,7 +326,7 @@ cd zlib-1.2.11
   --prefix=/ \
   --shared
 
-make CC="arm-linux-gnueabihf-gcc --sysroot=/opt/sysroot" CFLAGS="-O2 -s" LDSHARED="arm-linux-gnueabihf-gcc -shared -Wl,-soname,libz.so.1,--version-script,zlib.map"
+make CC="gcc --sysroot=/opt/sysroot" CFLAGS="-O2 -s" LDSHARED="gcc -shared -Wl,-soname,libz.so.1,--version-script,zlib.map"
 make prefix=/ DESTDIR=/opt/sysroot/Programs/zlib/1.2.11 install
 ln -s 1.2.11 /opt/sysroot/Programs/zlib/current
 mv /opt/sysroot/Programs/zlib/1.2.11/lib/pkgconfig /opt/sysroot/Programs/zlib/1.2.11/share
@@ -365,11 +349,10 @@ cd openssl-1.1.1c
   --prefix=/ \
   --openssldir=/etc/ssl \
   --libdir=lib \
-  linux-armv4
+  linux-x86_64
 make \
-CC="arm-linux-gnueabihf-gcc --sysroot=/opt/sysroot" \
-CFLAGS="-O2 -s -I/opt/sysroot/Programs/zlib/1.2.11/include" \
-PROCESSOR=ARM
+CC="gcc --sysroot=/opt/sysroot" \
+CFLAGS="-O2 -s -I/opt/sysroot/Programs/zlib/1.2.11/include"
 make install DESTDIR=/opt/sysroot/Programs/openssl/1.1.1c
 ln -s 1.1.1c /opt/sysroot/Programs/openssl/current
 mv /opt/sysroot/Programs/openssl/1.1.1c/lib/pkgconfig /opt/sysroot/Programs/openssl/1.1.1c/share
@@ -391,7 +374,6 @@ cd ncurses-6.1
 
 ./configure \
   CFLAGS="-O2 -s --sysroot=/opt/sysroot" \
-  --host=arm-linux-gnueabihf \
   --prefix= \
   --with-shared \
   --without-debug \
@@ -399,6 +381,7 @@ cd ncurses-6.1
   --without-manpages \
   --enable-static=no \
   --without-ada
+  
 make -j$(nproc)
 make install DESTDIR=/opt/sysroot/Programs/ncurses/6.1
 ln -s 6.1 /opt/sysroot/Programs/ncurses/current
@@ -418,7 +401,7 @@ cd wpa_supplicant-2.8/wpa_supplicant
 cp defconfig .config
 sed -i '/CONFIG_CTRL_IFACE_DBUS_NEW=y/d' .config
 sed -i '/CONFIG_CTRL_IFACE_DBUS_INTRO=y/d' .config
-CC="arm-linux-gnueabihf-gcc --sysroot=/opt/sysroot/Programs/glibc/2.29" \
+CC="gcc --sysroot=/opt/sysroot/Programs/glibc/2.29" \
 PKG_CONFIG_PATH=/opt/sysroot/Programs/libnl/3.4.0/share/pkgconfig \
 CFLAGS="--sysroot=/opt/sysroot -O2 -s -I/opt/sysroot/Programs/libnl/3.4.0/include/libnl3 -I/opt/sysroot/Programs/openssl/1.1.1c/include" \
 LDFLAGS="-L/opt/sysroot/Programs/libnl/3.4.0/lib -lnl-3 -L/opt/sysroot/Programs/openssl/1.1.1c/lib" \
@@ -448,6 +431,8 @@ link_files /System/Index/Binaries /Programs/wpa_supplicant/2.8/sbin
 #rm -rf /opt/sysroot/Programs/gobohide/1.3/{etc,share}
 
 #link_files /System/Index/Binaries /Programs/gobohide/1.3/bin
+
+exit 0
 
 #gobohide (0.14 64bit)
 cd /opt
