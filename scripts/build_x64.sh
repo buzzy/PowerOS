@@ -306,7 +306,7 @@ tar xfv iw-5.0.1.tar.xz
 cd iw-5.0.1
 CC="gcc --sysroot=/opt/sysroot/Programs/glibc/2.29" \
 PKG_CONFIG_PATH=/opt/sysroot/Programs/libnl/3.4.0/share/pkgconfig \
-CFLAGS="--sysroot=/opt/sysroot -O2 -s -I/opt/sysroot/Programs/libnl/3.4.0/include/libnl3" \
+CFLAGS="--sysroot=/opt/sysroot -O2 -s -I/opt/sysroot/Programs/glibc/2.29/include -I/opt/sysroot/Programs/kernel-amd64/5.2.3/headers -I/opt/sysroot/Programs/libnl/3.4.0/include/libnl3" \
 LDFLAGS="-L/opt/sysroot/Programs/libnl/3.4.0/lib -lnl-3" \
 make
 PKG_CONFIG_PATH=/opt/sysroot/Programs/libnl/3.4.0/share/pkgconfig \
@@ -326,11 +326,11 @@ cd zlib-1.2.11
   --prefix=/ \
   --shared
 
-make CC="gcc --sysroot=/opt/sysroot" CFLAGS="-O2 -s" LDSHARED="gcc -shared -Wl,-soname,libz.so.1,--version-script,zlib.map"
+make CC="gcc --sysroot=/opt/sysroot -I/opt/sysroot/Programs/glibc/2.29/include -I/opt/sysroot/Programs/kernel-amd64/5.2.3/headers" CFLAGS="-O2 -s" LDSHARED="gcc -shared -Wl,-soname,libz.so.1,--version-script,zlib.map"
 make prefix=/ DESTDIR=/opt/sysroot/Programs/zlib/1.2.11 install
 ln -s 1.2.11 /opt/sysroot/Programs/zlib/current
 mv /opt/sysroot/Programs/zlib/1.2.11/lib/pkgconfig /opt/sysroot/Programs/zlib/1.2.11/share
-rm -rf //opt/sysroot/Programs/zlib/1.2.11/share/man
+rm -rf /opt/sysroot/Programs/zlib/1.2.11/share/man
 
 link_files /System/Index/Includes /Programs/zlib/1.2.11/include
 link_files /System/Index/Libraries /Programs/zlib/1.2.11/lib
@@ -350,9 +350,10 @@ cd openssl-1.1.1c
   --openssldir=/etc/ssl \
   --libdir=lib \
   linux-x86_64
+  
 make \
 CC="gcc --sysroot=/opt/sysroot" \
-CFLAGS="-O2 -s -I/opt/sysroot/Programs/zlib/1.2.11/include"
+CFLAGS="-O2 -s -I/opt/sysroot/Programs/zlib/1.2.11/include -I/opt/sysroot/Programs/glibc/2.29/include -I/opt/sysroot/Programs/kernel-amd64/5.2.3/headers"
 make install DESTDIR=/opt/sysroot/Programs/openssl/1.1.1c
 ln -s 1.1.1c /opt/sysroot/Programs/openssl/current
 mv /opt/sysroot/Programs/openssl/1.1.1c/lib/pkgconfig /opt/sysroot/Programs/openssl/1.1.1c/share
@@ -373,7 +374,6 @@ tar xfv ncurses-6.1.tar.gz
 cd ncurses-6.1
 
 ./configure \
-  CFLAGS="-O2 -s --sysroot=/opt/sysroot" \
   --prefix= \
   --with-shared \
   --without-debug \
@@ -403,7 +403,7 @@ sed -i '/CONFIG_CTRL_IFACE_DBUS_NEW=y/d' .config
 sed -i '/CONFIG_CTRL_IFACE_DBUS_INTRO=y/d' .config
 CC="gcc --sysroot=/opt/sysroot/Programs/glibc/2.29" \
 PKG_CONFIG_PATH=/opt/sysroot/Programs/libnl/3.4.0/share/pkgconfig \
-CFLAGS="--sysroot=/opt/sysroot -O2 -s -I/opt/sysroot/Programs/libnl/3.4.0/include/libnl3 -I/opt/sysroot/Programs/openssl/1.1.1c/include" \
+CFLAGS="--sysroot=/opt/sysroot -O2 -s -I/opt/sysroot/Programs/libnl/3.4.0/include/libnl3 -I/opt/sysroot/Programs/openssl/1.1.1c/include -I/opt/sysroot/Programs/glibc/2.29/include -I/opt/sysroot/Programs/kernel-amd64/5.2.3/headers" \
 LDFLAGS="-L/opt/sysroot/Programs/libnl/3.4.0/lib -lnl-3 -L/opt/sysroot/Programs/openssl/1.1.1c/lib" \
 make BINDIR=/sbin LIBDIR=/lib
 mkdir -p /opt/sysroot/Programs/wpa_supplicant/2.8/sbin
@@ -413,47 +413,27 @@ install -v -m755 wpa_{cli,passphrase,supplicant} /opt/sysroot/Programs/wpa_suppl
 link_files /System/Index/Binaries /Programs/wpa_supplicant/2.8/sbin
 
 #gobohide (1.3)
-#cd /opt
-#wget https://github.com/gobolinux/GoboHide/releases/download/1.3/GoboHide-1.3.tar.gz
-#tar xfv GoboHide-1.3.tar.gz
-#cd GoboHide-1.3
-#./autogen.sh
-#./configure \
-#  PKG_CONFIG_PATH=/opt/sysroot/Programs/libnl/3.4.0/share/pkgconfig \
-#  CFLAGS="-O2 -s --sysroot=/opt/sysroot/Programs/glibc/2.29 -I/opt/sysroot/Programs/libnl/3.4.0/include/libnl3" \
-#  LDFLAGS="-L/opt/sysroot/Programs/libnl/3.4.0/lib" \
-#  LIBS="-lnl-3" \
-#  --host=arm-linux-gnueabihf \
-#  --prefix=/
-#make -j$(nproc)
-#make install DESTDIR=/opt/sysroot/Programs/gobohide/1.3
-#ln -s 1.3 /opt/sysroot/Programs/gobohide/current
-#rm -rf /opt/sysroot/Programs/gobohide/1.3/{etc,share}
-
-#link_files /System/Index/Binaries /Programs/gobohide/1.3/bin
-
-exit 0
-
-#gobohide (0.14 64bit)
 cd /opt
-wget https://gobolinux.org/older_downloads/GoboHide-0.14.tar.bz2
-tar xfv GoboHide-0.14.tar.bz2
-cd GoboHide-0.14
-wget -O config.guess 'https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD'
-wget -O config.sub 'https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD'
-./configure \
-  CFLAGS="-O2 -s --sysroot=/opt/sysroot" \
-  LDFLAGS="-static" \
-  --host=aarch64-linux-gnu \
-  --prefix=/
-make -j$(nproc)
-make install DESTDIR=/opt/sysroot/Programs/gobohide/0.14
-ln -s 0.14 /opt/sysroot/Programs/gobohide/current
-rm -rf /opt/sysroot/Programs/gobohide/0.14/{etc,share}
+wget https://github.com/gobolinux/GoboHide/releases/download/1.3/GoboHide-1.3.tar.gz
+tar xfv GoboHide-1.3.tar.gz
+cd GoboHide-1.3
 
-link_files /System/Index/Binaries /Programs/gobohide/0.14/bin
+./autogen.sh
+./configure \
+  PKG_CONFIG_PATH=/opt/sysroot/Programs/libnl/3.4.0/share/pkgconfig \
+  CFLAGS="-O2 -s -I/opt/sysroot/Programs/libnl/3.4.0/include/libnl3" \
+  LDFLAGS="-L/opt/sysroot/Programs/libnl/3.4.0/lib" \
+  LIBS="-lnl-3" \
+  --prefix=/
+  
+make -j$(nproc)
+make install DESTDIR=/opt/sysroot/Programs/gobohide/1.3
+ln -s 1.3 /opt/sysroot/Programs/gobohide/current
+rm -rf /opt/sysroot/Programs/gobohide/1.3/{etc,share}
+
+link_files /System/Index/Binaries /Programs/gobohide/1.3/bin
 
 #STRIP ALL BINARIES TO SAVE SPACE
-find /opt/sysroot/Programs/*/current/bin -executable -type f | xargs arm-linux-gnueabihf-strip -s || true
-find /opt/sysroot/Programs/*/current/sbin -executable -type f | xargs arm-linux-gnueabihf-strip -s || true
-find /opt/sysroot/Programs/*/current/libexec -executable -type f | xargs arm-linux-gnueabihf-strip -s || true
+find /opt/sysroot/Programs/*/current/bin -executable -type f | xargs strip -s || true
+find /opt/sysroot/Programs/*/current/sbin -executable -type f | xargs strip -s || true
+find /opt/sysroot/Programs/*/current/libexec -executable -type f | xargs strip -s || true
