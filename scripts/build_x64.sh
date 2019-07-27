@@ -54,14 +54,12 @@ rm -fr /tmp/headers
 find /opt/sysroot/Programs/kernel-amd64/5.2.3/headers \( -name .install -o -name ..install.cmd \) -delete
 
 #BUSYBOX:
-export ARCH=arm
-export CROSS_COMPILE=arm-linux-gnueabihf-
 cd /opt
 wget https://busybox.net/downloads/busybox-1.30.1.tar.bz2
 tar xfv busybox-1.30.1.tar.bz2
 cd busybox-1.30.1
 cp /opt/PowerOS/config/config.busybox .config
-make CFLAGS="-O2 -s" -j$(nproc)
+make -j$(nproc)
 make install
 mkdir -p /opt/sysroot/Programs/busybox/1.30.1/bin
 ln -s 1.30.1 /opt/sysroot/Programs/busybox/current
@@ -80,17 +78,16 @@ cd build
 
 ../configure \
   CFLAGS="-O2 -s" \
-  --host=arm-linux-gnueabihf \
   --prefix= \
   --includedir=/include \
   --libexecdir=/libexec \
   --with-__thread \
   --with-tls \
   --with-fp \
-  --with-headers=/opt/sysroot/Programs/kernel-aarch64/3.18.0-19095-g86596f58eadf/headers \
+  --with-headers=/opt/sysroot/Programs/kernel-amd64/5.2.3/headers \
   --without-cvs \
   --without-gd \
-  --enable-kernel=3.18.0 \
+  --enable-kernel=4.19.0 \
   --enable-stack-protector=strong \
   --enable-shared \
   --enable-add-ons=no \
@@ -121,7 +118,6 @@ cd binutils-2.32
 
 ./configure \
   CFLAGS="-O2 -s" \
-  --host=arm-linux-gnueabihf \
   --prefix=/ \
   --with-sysroot=/ \
   --with-float=hard \
@@ -156,15 +152,13 @@ cd build
 
 ../configure \
   CFLAGS="-O2 -s" \
-  --host=arm-linux-gnueabihf \
-  --target=arm-linux-gnueabihf \
   --with-sysroot=/ \
-  --with-float=hard \
   --prefix=/ \
   --enable-threads=posix \
   --enable-languages=c,c++ \
   --enable-__cxa_atexit \
   --disable-libmudflap \
+  --disable-bootstrap \
   --disable-libssp \
   --disable-libgomp \
   --disable-libstdcxx-pch \
