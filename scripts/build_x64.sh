@@ -34,8 +34,6 @@ cp /opt/wireless-regdb/db.txt ./net/wireless
 make oldconfig
 make prepare
 make -j$(nproc)
-make -j$(nproc) modules
-make dtbs
 
 make INSTALL_MOD_PATH="/tmp/modules" modules_install
 rm -f /tmp/modules/lib/modules/*/{source,build}
