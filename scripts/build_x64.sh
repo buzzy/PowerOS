@@ -9,7 +9,7 @@ link_files () {
 }
 
 #FETCH NEEDED TOOLS
-apt-get install -y gawk bison wget patch build-essential u-boot-tools bc vboot-kernel-utils libncurses5-dev flex texinfo unzip help2man libtool-bin python3 git nano kmod pkg-config autogen autopoint gettext libnl-cli-3-dev
+apt-get install -y gawk bison wget patch build-essential u-boot-tools bc vboot-kernel-utils libncurses5-dev flex texinfo unzip help2man libtool-bin python3 git nano kmod pkg-config autogen autopoint gettext libnl-cli-3-dev libssl-dev
 
 #CREATE DIR STRUCTURE
 rm -fr /opt/sysroot/*
@@ -29,7 +29,7 @@ cd /opt/kernel/linux-5.2.3
 #patch -p1 < /opt/PowerOS/patches/linux-3.18-log2.patch
 #patch -p1 < /opt/PowerOS/patches/linux-3.18-hide-legacy-dirs.patch
 #cp include/linux/compiler-gcc5.h include/linux/compiler-gcc8.h
-cat /opt/PowerOS/config/config.chromeos /opt/PowerOS/config/config.chromeos.extra > .config
+cat /opt/PowerOS/config/config.kernel ./.config
 cp /opt/wireless-regdb/db.txt ./net/wireless
 make oldconfig
 make prepare
