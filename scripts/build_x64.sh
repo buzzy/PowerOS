@@ -33,10 +33,9 @@ cat /opt/PowerOS/config/config.kernel ./.config
 cp /opt/wireless-regdb/db.txt ./net/wireless
 make oldconfig
 make prepare
-make -j$(nproc) Image
+make -j$(nproc)
 make -j$(nproc) modules
 make dtbs
-make -j$(nproc)
 
 make INSTALL_MOD_PATH="/tmp/modules" modules_install
 rm -f /tmp/modules/lib/modules/*/{source,build}
