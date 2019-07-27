@@ -29,7 +29,7 @@ cd /opt/kernel/linux-5.2.3
 #patch -p1 < /opt/PowerOS/patches/linux-3.18-log2.patch
 #patch -p1 < /opt/PowerOS/patches/linux-3.18-hide-legacy-dirs.patch
 #cp include/linux/compiler-gcc5.h include/linux/compiler-gcc8.h
-cat /opt/PowerOS/config/config.kernel ./.config
+cp /opt/PowerOS/config/config.kernel ./.config
 cp /opt/wireless-regdb/db.txt ./net/wireless
 make oldconfig
 make prepare
