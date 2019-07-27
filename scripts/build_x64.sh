@@ -9,7 +9,7 @@ link_files () {
 }
 
 #FETCH NEEDED TOOLS
-apt-get install -y gawk bison wget patch build-essential u-boot-tools bc vboot-kernel-utils libncurses5-dev flex texinfo unzip help2man libtool-bin python3 git nano kmod pkg-config autogen autopoint gettext libnl-cli-3-dev libssl-dev
+apt-get install -y gawk bison wget patch build-essential bc libncurses5-dev flex texinfo unzip help2man libtool-bin python3 git nano kmod pkg-config autogen autopoint gettext libnl-cli-3-dev libssl-dev libelf-dev
 
 #CREATE DIR STRUCTURE
 rm -fr /opt/sysroot/*
@@ -33,10 +33,10 @@ cat /opt/PowerOS/config/config.kernel ./.config
 cp /opt/wireless-regdb/db.txt ./net/wireless
 make oldconfig
 make prepare
-make CFLAGS="-O2 -s" -j$(nproc) Image
-make CFLAGS="-O2 -s" -j$(nproc) modules
+make -j$(nproc) Image
+make -j$(nproc) modules
 make dtbs
-make CFLAGS="-O2 -s" -j$(nproc)
+make -j$(nproc)
 
 make INSTALL_MOD_PATH="/tmp/modules" modules_install
 rm -f /tmp/modules/lib/modules/*/{source,build}
