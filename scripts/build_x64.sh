@@ -45,6 +45,7 @@ rm -rf /tmp/modules
 
 mkdir -p /opt/sysroot/Programs/kernel-amd64/5.2.3/image
 cp /opt/kernel/linux-5.2.3/arch/x86/boot/bzImage /opt/sysroot/Programs/kernel-amd64/5.2.3/image
+ln -s /Programs/kernel-amd64/current/image /opt/sysroot/System/Kernel/Image
 
 make headers_check
 make INSTALL_HDR_PATH="/tmp/headers" headers_install
