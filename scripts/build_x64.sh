@@ -440,6 +440,7 @@ tar xfv grub-2.04.tar.xz
 cd grub-2.04
 
 ./configure \
+  -target=x86_64 \
   --prefix=/ \
   --sbindir=/sbin \
   --sysconfdir=/etc \
