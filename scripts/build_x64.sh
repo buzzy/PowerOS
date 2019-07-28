@@ -433,6 +433,29 @@ rm -rf /opt/sysroot/Programs/gobohide/1.3/{etc,share}
 
 link_files /System/Index/Binaries /Programs/gobohide/1.3/bin
 
+#grub2
+cd /opt
+wget https://ftp.gnu.org/gnu/grub/grub-2.04.tar.xz
+tar xfv grub-2.04.tar.xz
+cd grub-2.04
+
+./configure \
+  --prefix=/ \
+  --sbindir=/sbin \
+  --sysconfdir=/etc \
+  --disable-werror
+
+make -j$(nproc)
+make install DESTDIR=/opt/sysroot/Programs/grub/2.04
+ln -s 2.04 /opt/sysroot/Programs/grub/current
+rm -rf /opt/sysroot/Programs/grub/2.04/etc/bash_completion.d
+rm -rf /opt/sysroot/Programs/grub/2.04/share/{info,locale,man}
+
+link_files /System/Index/Binaries /Programs/grub/2.04/bin
+link_files /System/Index/Libraries /Programs/grub/2.04/lib
+link_files /System/Index/Binaries /Programs/grub/2.04/sbin
+link_files /System/Index/Shared /Programs/grub/2.04/share
+
 #STRIP ALL BINARIES TO SAVE SPACE
 find /opt/sysroot/Programs/*/current/bin -executable -type f | xargs strip -s || true
 find /opt/sysroot/Programs/*/current/sbin -executable -type f | xargs strip -s || true
