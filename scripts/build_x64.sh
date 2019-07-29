@@ -442,7 +442,7 @@ cd grub-2.04
 
 ./configure \
   -target=x86_64 \
-  --prefix=/ \
+  --prefix= \
   --sbindir=/sbin \
   --sysconfdir=/etc \
   --disable-werror
