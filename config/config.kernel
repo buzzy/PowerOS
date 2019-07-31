@@ -1656,9 +1656,9 @@ CONFIG_SATA_PMP=y
 #
 # Controllers with non-SFF native interface
 #
-# CONFIG_SATA_AHCI_PLATFORM is not set
-# CONFIG_AHCI_CEVA is not set
-# CONFIG_AHCI_QORIQ is not set
+CONFIG_SATA_AHCI_PLATFORM=y
+CONFIG_AHCI_CEVA=y
+CONFIG_AHCI_QORIQ=y
 CONFIG_ATA_SFF=y
 
 #
@@ -1669,7 +1669,9 @@ CONFIG_ATA_BMDMA=y
 #
 # SATA SFF controllers with BMDMA
 #
-# CONFIG_SATA_DWC is not set
+CONFIG_SATA_DWC=y
+CONFIG_SATA_DWC_OLD_DMA=y
+# CONFIG_SATA_DWC_DEBUG is not set
 
 #
 # PATA SFF controllers with BMDMA
@@ -1678,7 +1680,8 @@ CONFIG_ATA_BMDMA=y
 #
 # PIO-only SFF controllers
 #
-# CONFIG_PATA_PLATFORM is not set
+CONFIG_PATA_PLATFORM=y
+CONFIG_PATA_OF_PLATFORM=y
 
 #
 # Generic fallback / legacy drivers
@@ -4112,6 +4115,7 @@ CONFIG_DMA_OF=y
 # CONFIG_INTEL_IDMA64 is not set
 # CONFIG_QCOM_HIDMA_MGMT is not set
 # CONFIG_QCOM_HIDMA is not set
+CONFIG_DW_DMAC_CORE=y
 # CONFIG_DW_DMAC is not set
 
 #
@@ -4131,7 +4135,7 @@ CONFIG_SW_SYNC=y
 # CONFIG_AUXDISPLAY is not set
 # CONFIG_UIO is not set
 CONFIG_IRQ_BYPASS_MANAGER=y
-# CONFIG_VIRT_DRIVERS is not set
+CONFIG_VIRT_DRIVERS=y
 CONFIG_VIRTIO_MENU=y
 # CONFIG_VIRTIO_MMIO is not set
 
