@@ -72,6 +72,8 @@ rm -fr /tmp/headers
 #link headers to include dir??
 find /opt/sysroot/Programs/kernel-aarch64/3.18.0-19095-g86596f58eadf/headers \( -name .install -o -name ..install.cmd \) -delete
 
+link_files /System/Index/Includes /Programs/kernel-aarch64/3.18.0-19095-g86596f58eadf/headers
+
 #BUSYBOX:
 export ARCH=arm
 export CROSS_COMPILE=arm-linux-gnueabihf-
