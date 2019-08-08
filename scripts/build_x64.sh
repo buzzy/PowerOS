@@ -54,6 +54,8 @@ cp -rv /tmp/headers/include/* /opt/sysroot/Programs/kernel-amd64/5.2.3/headers
 rm -fr /tmp/headers
 find /opt/sysroot/Programs/kernel-amd64/5.2.3/headers \( -name .install -o -name ..install.cmd \) -delete
 
+link_files /System/Index/Includes /Programs/kernel-amd64/5.2.3/headers
+
 #BUSYBOX:
 cd /opt
 wget https://busybox.net/downloads/busybox-1.30.1.tar.bz2
