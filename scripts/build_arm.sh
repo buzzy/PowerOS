@@ -169,7 +169,7 @@ link_files /System/Index/Libraries /Programs/binutils/2.32/lib
 
 #GCC
 cd /opt
-wget http://ftp.tsukuba.wide.ad.jp/software/gcc/releases/gcc-8.3.0/gcc-8.3.0.tar.xz
+wget ftp://ftp.fu-berlin.de/unix/languages/gcc/releases/gcc-8.3.0/gcc-8.3.0.tar.xz
 tar xfv gcc-8.3.0.tar.xz
 cd gcc-8.3.0
 ./contrib/download_prerequisites
