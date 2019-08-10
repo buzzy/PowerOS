@@ -426,6 +426,7 @@ cd ncurses-6.1
   --disable-stripping \
   --without-manpages \
   --enable-static=no \
+  --enable-widec \
   --without-ada
 make -j$(nproc)
 make install DESTDIR=/opt/sysroot/Programs/ncurses/6.1
