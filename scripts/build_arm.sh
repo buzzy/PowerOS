@@ -501,3 +501,4 @@ link_files /System/Index/Binaries /Programs/gobohide/0.14/bin
 find /opt/sysroot/Programs/*/current/bin -executable -type f | xargs arm-linux-gnueabihf-strip -s || true
 find /opt/sysroot/Programs/*/current/sbin -executable -type f | xargs arm-linux-gnueabihf-strip -s || true
 find /opt/sysroot/Programs/*/current/libexec -executable -type f | xargs arm-linux-gnueabihf-strip -s || true
+#ALSO STRIP LIBRARIES!!!!
