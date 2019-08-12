@@ -227,7 +227,7 @@ cd bison-3.4.1
 make -j1
 make install DESTDIR=/opt/sysroot/Programs/bison/3.4.1
 ln -s 3.4.1 /opt/sysroot/Programs/bison/current
-rm -rf /opt/sysroot/Programs/bison/3.4.1/share/{bison,doc,info,man}
+rm -rf /opt/sysroot/Programs/bison/3.4.1/share/{doc,info,man}
 
 link_files /System/Index/Binaries /Programs/bison/3.4.1/bin
 link_files /System/Index/Shared /Programs/bison/3.4.1/share
