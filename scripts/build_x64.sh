@@ -213,6 +213,7 @@ cd flex-2.6.4
 sed -i "/math.h/a #include <malloc.h>" src/flexdef.h
 
 ./configure \
+  --prefix=/ \
   --disable-static
 
 make -j$(nproc)
