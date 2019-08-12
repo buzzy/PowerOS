@@ -241,6 +241,7 @@ sed -i "/math.h/a #include <malloc.h>" src/flexdef.h
 
 ./configure \
   CFLAGS="-O2 -s --sysroot=/opt/sysroot" \
+  --prefix=/ \
   --host=arm-linux-gnueabihf \
   --disable-static
 
