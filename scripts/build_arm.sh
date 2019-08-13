@@ -211,6 +211,25 @@ link_files /System/Index/Includes /Programs/gcc/8.3.0/include
 link_files /System/Index/Libraries /Programs/gcc/8.3.0/lib
 link_files /System/Index/Libraries/libexec /Programs/gcc/8.3.0/libexec
 
+#gobohide (0.14 64bit)
+cd /opt
+wget https://gobolinux.org/older_downloads/GoboHide-0.14.tar.bz2
+tar xfv GoboHide-0.14.tar.bz2
+cd GoboHide-0.14
+wget -O config.guess 'https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD'
+wget -O config.sub 'https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD'
+./configure \
+  CFLAGS="-O2 -s --sysroot=/opt/sysroot" \
+  LDFLAGS="-static" \
+  --host=aarch64-linux-gnu \
+  --prefix=/
+make -j$(nproc)
+make install DESTDIR=/opt/sysroot/Programs/gobohide/0.14
+ln -s 0.14 /opt/sysroot/Programs/gobohide/current
+rm -rf /opt/sysroot/Programs/gobohide/0.14/{etc,share}
+
+link_files /System/Index/Binaries /Programs/gobohide/0.14/bin
+
 #bison
 cd /opt
 wget http://ftp.twaren.net/Unix/GNU/gnu/bison/bison-3.4.1.tar.xz
@@ -479,24 +498,7 @@ link_files /System/Index/Binaries /Programs/wpa_supplicant/2.8/sbin
 
 #link_files /System/Index/Binaries /Programs/gobohide/1.3/bin
 
-#gobohide (0.14 64bit)
-cd /opt
-wget https://gobolinux.org/older_downloads/GoboHide-0.14.tar.bz2
-tar xfv GoboHide-0.14.tar.bz2
-cd GoboHide-0.14
-wget -O config.guess 'https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD'
-wget -O config.sub 'https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD'
-./configure \
-  CFLAGS="-O2 -s --sysroot=/opt/sysroot" \
-  LDFLAGS="-static" \
-  --host=aarch64-linux-gnu \
-  --prefix=/
-make -j$(nproc)
-make install DESTDIR=/opt/sysroot/Programs/gobohide/0.14
-ln -s 0.14 /opt/sysroot/Programs/gobohide/current
-rm -rf /opt/sysroot/Programs/gobohide/0.14/{etc,share}
 
-link_files /System/Index/Binaries /Programs/gobohide/0.14/bin
 
 #STRIP ALL BINARIES TO SAVE SPACE
 find /opt/sysroot/Programs/*/current/bin -executable -type f | xargs arm-linux-gnueabihf-strip -s || true
