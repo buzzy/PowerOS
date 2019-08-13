@@ -230,6 +230,8 @@ rm -rf /opt/sysroot/Programs/gobohide/0.14/{etc,share}
 
 link_files /System/Index/Binaries /Programs/gobohide/0.14/bin
 
+#ENTER THE CHROOT HERE!
+
 #bison
 cd /opt
 wget http://ftp.twaren.net/Unix/GNU/gnu/bison/bison-3.4.1.tar.xz
